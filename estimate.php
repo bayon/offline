@@ -14,17 +14,7 @@
   </div>
   	<h2>Construction Estimator:</h2>
 		<h3>Estimate</h3>
-  	 <ul>
-  		<li>select from "tasks" </li>
-  			<ul>
-  				<li>add time to complete</li>
-  				<li>number of repitions</li>
-  			</ul>
-  		<li>select from "materials"</li>
-  			<ul>
-  				<li>add number needed</li>
-  			</ul>
-  	</ul>
+  	
     <ul id="estimateItems">
     </ul>
     <form type="post" onsubmit="addEstimate(); return false;">
@@ -35,6 +25,17 @@
     
      <ul id="todoItemsForEstimate">
     </ul>
+     <ul>
+  		<li>select from "tasks" </li>
+  			<ul>
+  				<li>add time to complete</li>
+  				<li>number of repitions</li>
+  			</ul>
+  		<li>select from "materials"</li>
+  			<ul>
+  				<li>add number needed</li>
+  			</ul>
+  	</ul>
     <script>
     /* ///////////////////// BASIC OBJECT //////////////////////////// */
 
