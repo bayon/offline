@@ -9,7 +9,7 @@
 		
 		 
  ?>
-		<h2>Construction Estimator:</h2>
+		<h2>Estimator:</h2>
 		<h3>Reference</h3>
 		<a href="http://www.forteworks.com/ref/index.php" target='_blank'>forteworks reference</a>
 		 

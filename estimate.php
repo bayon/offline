@@ -2,6 +2,7 @@
 <html>
   <head>
     <link rel='stylesheet' type='text/css' href='css/style.css'>
+    <script type='text/javascript' src='m/EstimateModel.js'></script>
    <script type='text/javascript' src='js/estimate.js'></script>
    <script type='text/javascript' src='js/tasks.js'></script>
    <script type='text/javascript' src='js/materials.js'></script>
@@ -12,7 +13,7 @@
   	
   	
   </div>
-  	<h2>Construction Estimator:</h2>
+  	<h2>Estimator:</h2>
 		<h3>Estimate</h3>
   	
     <ul id="estimateItems">
@@ -23,6 +24,10 @@
     </form>
     
     
+    <p>Selected Estimate:</p>
+    <ul id="selectedEstimateItem"></ul>
+    
+    <p> Software tasks for estimate creation.</p>
      <ul id="todoItemsForEstimate">
     </ul>
      <ul>
@@ -37,32 +42,8 @@
   			</ul>
   	</ul>
     <script>
-    /* ///////////////////// BASIC OBJECT //////////////////////////// */
-
-	function Estimate(arrayOfThings) {
-
-		this.arrayOfThings = arrayOfThings;
-	}
-
-
-	Estimate.prototype.arrayOfThings = '';
-
-	Estimate.prototype.reveal = function() {
-		
-		alert(this.arrayOfThings);
-	};
-	Estimate.prototype.addElement = function(element) {
-
-		this.arrayOfThings.push(element);
-	};
-    	var myArray = new Array('one', 'two', 'three');
-	var estimate1 = new Estimate(myArray);
-
-	// call the Estimate reveal method.
-	//estimate1.reveal();
-	//estimate1.addElement('banana');
-	//estimate1.reveal();
-	// hello
+   
+	
     </script>
   </body>
 </html>​

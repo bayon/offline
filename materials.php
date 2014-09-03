@@ -8,7 +8,7 @@
   </head>
   <body onload="initMaterials();">
   	<?php include_once('navigation.php'); ?>
-  	<h2>Construction Estimator:</h2>
+  	<h2>Estimator:</h2>
 		<h3>Materials</h3>
   	 
     <ul id="materialItems">
