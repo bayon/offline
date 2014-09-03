@@ -3,6 +3,8 @@
   <head>
     <link rel='stylesheet' type='text/css' href='css/style.css'>
     <script type='text/javascript' src='m/EstimateModel.js'></script>
+    <script type='text/javascript' src='m/TaskModel.js'></script>
+    <script type='text/javascript' src='m/MaterialModel.js'></script>
    <script type='text/javascript' src='js/estimate.js'></script>
    <script type='text/javascript' src='js/tasks.js'></script>
    <script type='text/javascript' src='js/materials.js'></script>

@@ -99,19 +99,43 @@ function loadTodoItemsForEstimate(tx, rs) {
 	todoItems.innerHTML = rowOutput;
 }
 function renderTodoForEstimate(row) {
+	console.log("fn renderTodoForEstimate");
+	 // instantiate new task obj here and pass it as param.
+	 var task = new Task(row.ID, row.todo, row.minutes,row.added_on);
+	 //alert(row.ID +"---"+row.todo +"---"+row.minutes +"---"+row.added_on +"---");
+	 var array = new Array('one','two','three');
+	// task.reveal();
 	return "<li>" + row.todo + ":" + row.minutes + " [<a href='javascript:void(0);'  onclick='taskNameSpace.webdb.selectTodo(" + row.ID + ");'>Select</a>]</li>";
+
 }
 taskNameSpace.webdb.selectTodo = function(id) {
+	console.log("fn selectTodo"+id);
+	
+	//task.reveal();
+	
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("SELECT * FROM todo WHERE ID=?", [id], taskNameSpace.webdb.onTaskSuccess, taskNameSpace.webdb.onTaskError);
+		tx.executeSql("SELECT * FROM todo WHERE ID=?", [id], taskNameSpace.webdb.onTaskSelectSuccess, taskNameSpace.webdb.onTaskError);
 	});
+	
 };
 
 taskNameSpace.webdb.createTaskTableForEstimate = function() {
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("CREATE TABLE IF NOT EXISTS todoForEstimate(ID INTEGER PRIMARY KEY ASC, todo TEXT, minutes INTEGER, added_on DATETIME)", []);
+		tx.executeSql("CREATE TABLE IF NOT EXISTS todoForEstimate(ID INTEGER PRIMARY KEY ASC, todo TEXT, minutes INTEGER, repititions INTEGER,totalMinutes INTEGER,totalCost FLOAT, added_on DATETIME)", []);
+	});
+};
+taskNameSpace.webdb.onTaskSelectSuccess = function(tx, rs) {
+	// re-render the data.
+	console.log("fn onTaskSelectSuccess");
+	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
+	console.log(  rs.rows.item(0));
+	console.log(  rs.rows.item(0).todo);
+	task = new Task(rs.rows.item(0).ID,rs.rows.item(0).todo,rs.rows.item(0).minutes,rs.rows.item(0).added_on);
+	var db = taskNameSpace.webdb.db;
+	db.transaction(function(tx) {
+		tx.executeSql("INSERT INTO todoForEstimate(ID, todo , minutes , added_on ) VALUES (NULL,'"+task.todo+"','"+task.minutes+"','"+task.added_on+"');", []);
 	});
 };
 

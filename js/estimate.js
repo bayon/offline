@@ -16,6 +16,7 @@ estimateNameSpace.webdb.createEstimateTable = function() {
 };
 
 estimateNameSpace.webdb.addEstimate = function(estimateText) {
+	console.log('fn addEstimate');
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		var addedOn = new Date();
@@ -69,6 +70,7 @@ function renderEstimate(row) {
 
 
 function addEstimate() {
+	console.log('fn addEstimate');
 	var estimate = document.getElementById("estimate");
 	estimateNameSpace.webdb.addEstimate(estimate.value);
 	estimate.value = "";
@@ -76,10 +78,7 @@ function addEstimate() {
  
 
 estimateNameSpace.webdb.selectEstimate = function(id) {
-	
-	
-	
-	
+	console.log('fn addEstimate');
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM estimate WHERE ID=?", [id], estimateNameSpace.webdb.onEstimateSelectSuccess, estimateNameSpace.webdb.onEstimateError);
@@ -112,7 +111,9 @@ function startEstimation(id){
 	//other tables
 	initTasksForEstimate();
 	initMaterialsForEstimate();
-	doOutsideFunction(estimate);
+	//doOutsideFunction(estimate);
+	taskNameSpace.webdb.open();
+	taskNameSpace.webdb.createTaskTableForEstimate();
 	
 }
 
