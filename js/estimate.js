@@ -43,9 +43,7 @@ function initEstimate() {
 	estimateNameSpace.webdb.open();
 	estimateNameSpace.webdb.createEstimateTable();
 	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);
-	//other tables
-	initTasksForEstimate();
-	initMaterials();
+	
 }
 estimateNameSpace.webdb.getAllEstimateItems = function(renderFunc) {
 	var db = estimateNameSpace.webdb.db;
@@ -111,6 +109,9 @@ function startEstimation(id){
 	var arrayOfTasks = new Array();
 	var arrayOfMaterials = new Array();
 	var estimate = new Estimate(id, arrayOfTasks, arrayOfMaterials);
+	//other tables
+	initTasksForEstimate();
+	initMaterialsForEstimate();
 	doOutsideFunction(estimate);
 	
 }

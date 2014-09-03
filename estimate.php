@@ -26,10 +26,15 @@
     
     <p>Selected Estimate:</p>
     <ul id="selectedEstimateItem"></ul>
-    
-    <p> Software tasks for estimate creation.</p>
+    <p>Available Tasks:</p>
      <ul id="todoItemsForEstimate">
     </ul>
+     <p>Available Materials:</p>
+     <ul id="materialItemsForEstimate">
+    </ul>
+    
+    <p> Software tasks for estimate creation.</p>
+    
      <ul>
   		<li>select from "tasks" </li>
   			<ul>

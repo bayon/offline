@@ -7,6 +7,5 @@
 		<?php include_once('navigation.php'); ?>
 		<h2>Construction Estimator:</h2>
 		<h3>Home</h3>
-		
 	</body>
 </html>​

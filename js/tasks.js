@@ -74,6 +74,8 @@ function addTodo() {
 	todo.value = "";
 	minutes.value = "";
 }
+
+
 ////////////////
 function initTasksForEstimate() {
 	taskNameSpace.webdb.open();
@@ -112,22 +114,6 @@ taskNameSpace.webdb.createTaskTableForEstimate = function() {
 		tx.executeSql("CREATE TABLE IF NOT EXISTS todoForEstimate(ID INTEGER PRIMARY KEY ASC, todo TEXT, minutes INTEGER, added_on DATETIME)", []);
 	});
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ////////////////////////////////
