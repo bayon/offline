@@ -123,7 +123,7 @@ taskNameSpace.webdb.selectTodo = function(id) {
 taskNameSpace.webdb.createTaskTableForEstimate = function() {
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("CREATE TABLE IF NOT EXISTS todoForEstimate(ID INTEGER PRIMARY KEY ASC, todo TEXT, minutes INTEGER, repititions INTEGER,totalMinutes INTEGER,totalCost FLOAT, added_on DATETIME)", []);
+		tx.executeSql("CREATE TABLE IF NOT EXISTS todoForEstimate(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, todo TEXT, minutes INTEGER, repititions INTEGER,totalMinutes INTEGER,totalCost FLOAT, added_on DATETIME)", []);
 	});
 };
 taskNameSpace.webdb.onTaskSelectSuccess = function(tx, rs) {
@@ -133,9 +133,10 @@ taskNameSpace.webdb.onTaskSelectSuccess = function(tx, rs) {
 	console.log(  rs.rows.item(0));
 	console.log(  rs.rows.item(0).todo);
 	task = new Task(rs.rows.item(0).ID,rs.rows.item(0).todo,rs.rows.item(0).minutes,rs.rows.item(0).added_on);
+	var est_id = sessionStorage.est_id;
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("INSERT INTO todoForEstimate(ID, todo , minutes , added_on ) VALUES (NULL,'"+task.todo+"','"+task.minutes+"','"+task.added_on+"');", []);
+		tx.executeSql("INSERT INTO todoForEstimate(ID, est_id, todo , minutes , added_on ) VALUES (NULL,'"+est_id+"','"+task.todo+"','"+task.minutes+"','"+task.added_on+"');", []);
 	});
 };
 

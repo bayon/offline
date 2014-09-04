@@ -1,3 +1,4 @@
+<?php include_once('constants.php'); ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -5,17 +6,13 @@
     <script type='text/javascript' src='m/EstimateModel.js'></script>
     <script type='text/javascript' src='m/TaskModel.js'></script>
     <script type='text/javascript' src='m/MaterialModel.js'></script>
-   <script type='text/javascript' src='js/estimate.js'></script>
-   <script type='text/javascript' src='js/tasks.js'></script>
-   <script type='text/javascript' src='js/materials.js'></script>
+   	<script type='text/javascript' src='js/estimate.js'></script>
+   	<script type='text/javascript' src='js/tasks.js'></script>
+   	<script type='text/javascript' src='js/materials.js'></script>
   </head>
   <body onload="initEstimate();">
-  <?php include_once('navigation.php'); ?>
-  <div>
-  	
-  	
-  </div>
-  	<h2>Estimator:</h2>
+  <?php include_once ('navigation.php'); ?>
+ 
 		<h3>Estimate</h3>
   	
     <ul id="estimateItems">
@@ -35,22 +32,6 @@
      <ul id="materialItemsForEstimate">
     </ul>
     
-    <p> Software tasks for estimate creation.</p>
-    
-     <ul>
-  		<li>select from "tasks" </li>
-  			<ul>
-  				<li>add time to complete</li>
-  				<li>number of repitions</li>
-  			</ul>
-  		<li>select from "materials"</li>
-  			<ul>
-  				<li>add number needed</li>
-  			</ul>
-  	</ul>
-    <script>
    
-	
-    </script>
   </body>
 </html>​

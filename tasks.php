@@ -1,3 +1,4 @@
+<?php include_once('constants.php'); ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,7 +8,7 @@
   </head>
   <body onload="initTasks();">
   	<?php include_once('navigation.php'); ?>
-  <h2>Estimator:</h2>
+   
 		<h3>Tasks</h3>
     <ul id="todoItems">
     </ul>

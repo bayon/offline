@@ -105,9 +105,12 @@ function renderSelectedEstimate(row) {
 function startEstimation(id){
 	//alert('fn startEstimation:'+id);
 	//model
-	var arrayOfTasks = new Array();
-	var arrayOfMaterials = new Array();
-	var estimate = new Estimate(id, arrayOfTasks, arrayOfMaterials);
+	//var arrayOfTasks = new Array();
+	//var arrayOfMaterials = new Array();
+	//var estimate = new Estimate(id, arrayOfTasks, arrayOfMaterials);
+	// SET CURRENT ESTIMATE ID
+	sessionStorage.est_id = id;
+	//alert(sessionStorage.est_id);
 	//other tables
 	initTasksForEstimate();
 	initMaterialsForEstimate();
@@ -117,12 +120,4 @@ function startEstimation(id){
 	
 }
 
-function doOutsideFunction(estimate){
-	//alert('fn doOutsideFunction:');
-	// call the Estimate reveal method.
-	estimate.reveal();
-	estimate.addTaskElement('some misc task not hard coded');
-	estimate.addMaterialElement('material hard coded');
-	estimate.reveal();
-	
-}
+

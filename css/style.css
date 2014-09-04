@@ -12,5 +12,11 @@ body a {
 }
 .navigation_container{
 	text-align:center;
-	background-color:#ccc;
+	background-color:#6F84FF;
+	
+}
+.navigation_container a{
+	 
+	color:white;
+	
 }

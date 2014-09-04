@@ -85,7 +85,7 @@ materialNameSpace.webdb.getAllMaterialItemsForEstimate = function(renderFunc) {
 	console.log('fn getAllMaterialItemsForEstimate');
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("SELECT * FROM material", [], renderFunc, materialNameSpace.webdb.onTaskError);
+		tx.executeSql("SELECT * FROM material", [], renderFunc, materialNameSpace.webdb.onMaterialError);
 	});
 };
 function loadMaterialItemsForEstimate(tx, rs) {
@@ -106,7 +106,7 @@ materialNameSpace.webdb.selectMaterial = function(id) {
 	console.log('fn selectMaterial');
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("SELECT * FROM material WHERE ID=?", [id], materialNameSpace.webdb.onTaskSuccess, materialNameSpace.webdb.onTaskError);
+		tx.executeSql("SELECT * FROM material WHERE ID=?", [id], materialNameSpace.webdb.onMaterialSelectSuccess, materialNameSpace.webdb.onMaterialError);
 	});
 };
 
@@ -114,9 +114,21 @@ materialNameSpace.webdb.createMaterialTableForEstimate = function() {
 	console.log('fn createMaterialTableForEstimate');
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("CREATE TABLE IF NOT EXISTS materialForEstimate(ID INTEGER PRIMARY KEY ASC, material TEXT, cost INTEGER, added_on DATETIME)", []);
+		tx.executeSql("CREATE TABLE IF NOT EXISTS materialForEstimate(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, material TEXT, cost INTEGER, added_on DATETIME)", []);
 	});
 };
-
+materialNameSpace.webdb.onMaterialSelectSuccess = function(tx, rs) {
+	// re-render the data.
+	console.log("fn onMaterialSelectSuccess");
+	//materialNameSpace.webdb.getAllTodoItems(loadTodoItems);
+	console.log(  rs.rows.item(0));
+	console.log(  rs.rows.item(0).material);
+	material = new Material(rs.rows.item(0).ID,rs.rows.item(0).material,rs.rows.item(0).cost,rs.rows.item(0).added_on);
+	var db = materialNameSpace.webdb.db;
+	var est_id = sessionStorage.est_id;
+	db.transaction(function(tx) {
+		tx.executeSql("INSERT INTO materialForEstimate(ID, est_id, material , cost , added_on ) VALUES (NULL,'"+est_id+"','"+material.material+"','"+material.cost+"','"+material.added_on+"');", []);
+	});
+};
 
 ////////////////////////////////
