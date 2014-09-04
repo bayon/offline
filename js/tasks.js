@@ -127,8 +127,11 @@ taskNameSpace.webdb.onTaskSelectSuccess = function(tx, rs) {
 	var est_id = sessionStorage.est_id;
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("INSERT INTO todoForEstimate(ID, est_id, todo , minutes , added_on ) VALUES (NULL,'" + est_id + "','" + task.todo + "','" + task.minutes + "','" + task.added_on + "');", []);
+		tx.executeSql("INSERT INTO todoForEstimate(ID, est_id, todo , minutes , added_on ) VALUES (NULL,'" + est_id + "','" + task.todo + "','" + task.minutes + "','" + task.added_on + "');", [], taskNameSpace.webdb.onTaskInsertSuccess, taskNameSpace.webdb.onTaskError );
 	});
+	//refresh
+	
+	//startEstimation(sessionStorage.est_id);
 };
 
 ////////////////////////////////
@@ -153,7 +156,7 @@ taskNameSpace.webdb.getAllTodoItemsForEstimateID = function(renderFunc) {
 };
  function loadTodoItemsForEstimateID(tx, rs) {
  	console.log("fn loadTodoItemsForEstimateID"); 
-	var rowOutput = "<tr><th>Task</th><th>#</th><th>min each</th><th>min total</th><th colspan=3>actions</th></tr>";
+	var rowOutput = "<tr><th>Task</th><th>#</th><th>min each</th><th>min total</th><th>subtotal</th><th colspan=3>actions</th></tr>";
 	var todoItems = document.getElementById("todoItemsForCurrentEstimate");
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderTodoForCurrentEstimate(rs.rows.item(i));
@@ -167,11 +170,13 @@ function renderTodoForCurrentEstimateORIGINAL(row) {
 	return "<li>" + row.todo + ":" + row.minutes + " [<a href='javascript:void(0);'  onclick='taskNameSpace.webdb.selectTodo(" + row.ID + ");'>Select</a>]</li>";
 
 }
-///-------------------------------------------
+///-------------------------------------------//selectTask
 /////>>>>>>>>>>>>>>>>>>
 function renderTodoForCurrentEstimate(row) {
+	var rpm = sessionStorage.rate_per_min;
+	//alert(rpm);
 	 console.log("fn renderTodoForCurrentEstimate");
-	return "<tr><td>" + row.todo + "</td><td>" + row.repititions + "</td><td>" + row.minutes + "&nbsp;min </td>" +"<td>" + row.minutes*row.repititions + "&nbsp;min</td>"
+	return "<tr><td>" + row.todo + "</td><td>" + row.repititions + "</td><td>" + row.minutes + "&nbsp;min </td>" +"<td>" + row.minutes*row.repititions + "&nbsp;min</td>"+"<td>$&nbsp;" + row.minutes*row.repititions*rpm + "</td>"
 	+"<td><a href='javascript:void(0);'  class='plusMinus' onclick='taskNameSpace.webdb.increaseNumberOf(" + row.ID + "," + row.repititions + ");'>+</a></td>"
 	+"<td><a href='javascript:void(0);' class='plusMinus'  onclick='taskNameSpace.webdb.decreaseNumberOf(" + row.ID + "," + row.repititions + ");'>-</a></td>"
 	+"<td> <a href='javascript:void(0);'  onclick='taskNameSpace.webdb.deleteTaskForEstimateID(" + row.ID + ");'>Delete</a></td>"
@@ -182,7 +187,7 @@ taskNameSpace.webdb.increaseNumberOf = function(id, numberOf) {
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		var additionalTime = numberOf + 1;
-		tx.executeSql("Update todoForEstimate SET repititions = ? WHERE ID=?", [additionalTime, id], taskNameSpace.webdb.changeNumberOfSuccess, taskNameSpace.webdb.onThingError);
+		tx.executeSql("Update todoForEstimate SET repititions = ? WHERE ID=?", [additionalTime, id], taskNameSpace.webdb.changeNumberOfSuccess, taskNameSpace.webdb.onTaskError);
 	});
 };
 taskNameSpace.webdb.decreaseNumberOf = function(id, numberOf) {
@@ -190,7 +195,7 @@ taskNameSpace.webdb.decreaseNumberOf = function(id, numberOf) {
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		var decreasedTime = numberOf - 1;
-		tx.executeSql("Update todoForEstimate SET repititions = ? WHERE ID=?", [decreasedTime, id], taskNameSpace.webdb.changeNumberOfSuccess, taskNameSpace.webdb.onThingError);
+		tx.executeSql("Update todoForEstimate SET repititions = ? WHERE ID=?", [decreasedTime, id], taskNameSpace.webdb.changeNumberOfSuccess, taskNameSpace.webdb.onTaskError);
 	});
 };
 taskNameSpace.webdb.changeNumberOfSuccess = function(tx, r) {
@@ -201,7 +206,17 @@ taskNameSpace.webdb.deleteTaskForEstimateID = function(id) {
 	console.log("fn deleteTaskForEstimateID");
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("DELETE FROM todoForEstimate WHERE ID=?", [id], taskNameSpace.webdb.onTaskSuccess, taskNameSpace.webdb.onTaskError);
+		tx.executeSql("DELETE FROM todoForEstimate WHERE ID=?", [id], taskNameSpace.webdb.onTaskDeleteSuccess, taskNameSpace.webdb.onTaskError);
 	});
+};
+taskNameSpace.webdb.onTaskDeleteSuccess = function(tx, r) {
+	console.log("fn onTaskDeleteSuccess");
+	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
+	startEstimation(sessionStorage.est_id);
+};
+taskNameSpace.webdb.onTaskInsertSuccess = function(tx, r) {
+	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
+	console.log("fn onTaskInsertSuccess");
+	startEstimation(sessionStorage.est_id);
 };
 /////>>>>>>>>>>>>>>>>>>

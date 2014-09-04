@@ -23,6 +23,7 @@ include_once ('constants.php');
 
 		<ul id="estimateItems"></ul>
 		<form type="post" onsubmit="addEstimate(); return false;">
+			$/hr<input type="text" id="hrRate" name="hrRate"  style="width: 20px;" />
 			<input type="text" id="estimate" name="estimate"  style="width: 200px;" />
 			<input type="submit" value="+ estimate"/>
 		</form>

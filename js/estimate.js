@@ -70,6 +70,14 @@ function renderEstimate(row) {
 function addEstimate() {
 	console.log('fn addEstimate');
 	var estimate = document.getElementById("estimate");
+	var hrRate = document.getElementById("hrRate");
+	 
+	 
+	var rate_per_hour = parseFloat(hrRate.value);
+	//alert(rate_per_hour);
+	var rate_per_minute = (rate_per_hour/60).toFixed(2);
+	//alert(rate_per_minute);
+	sessionStorage.rate_per_min = rate_per_minute;
 	estimateNameSpace.webdb.addEstimate(estimate.value);
 	estimate.value = "";
 }
@@ -97,7 +105,7 @@ function renderSelectedEstimate(row) {
 }
 
 function startEstimation(id) {
-
+	//sleep(1000);// let any db changes catch up
 	// SET CURRENT ESTIMATE ID
 	sessionStorage.est_id = id;
 	taskNameSpace.webdb.open();

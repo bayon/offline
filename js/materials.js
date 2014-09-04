@@ -108,23 +108,27 @@ materialNameSpace.webdb.selectMaterial = function(id) {
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM material WHERE ID=?", [id], materialNameSpace.webdb.onMaterialSelectSuccess, materialNameSpace.webdb.onMaterialError);
 	});
+	
 };
 
 materialNameSpace.webdb.createMaterialTableForEstimates = function() {
 	console.log('fn createMaterialTableForEstimates');
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("CREATE TABLE IF NOT EXISTS materialForEstimates(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, material TEXT, cost INTEGER, added_on DATETIME)", []);
+		tx.executeSql("CREATE TABLE IF NOT EXISTS materialForEstimates(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, material TEXT, cost INTEGER, numberOf INTEGER, added_on DATETIME)", []);
 	});
 };
 materialNameSpace.webdb.onMaterialSelectSuccess = function(tx, rs) {
 	console.log("fn onMaterialSelectSuccess");
-	material = new Material(rs.rows.item(0).ID,rs.rows.item(0).material,rs.rows.item(0).cost,rs.rows.item(0).added_on);
+	material = new Material(rs.rows.item(0).ID,rs.rows.item(0).material,rs.rows.item(0).cost,rs.rows.item(0).numberOf,rs.rows.item(0).added_on);
 	var db = materialNameSpace.webdb.db;
 	var est_id = sessionStorage.est_id;
+	var addedOn = new Date();
 	db.transaction(function(tx) {
-		tx.executeSql("INSERT INTO materialForEstimates(ID, est_id, material , cost , added_on ) VALUES (NULL,'"+est_id+"','"+material.material+"','"+material.cost+"','"+material.added_on+"');", []);
+		tx.executeSql("INSERT INTO materialForEstimates(ID, est_id, material , cost , numberOf, added_on ) VALUES (NULL,'"+est_id+"','"+material.material+"','"+material.cost+"',1,'"+addedOn+"');", [], materialNameSpace.webdb.onMaterialInsertSuccess, materialNameSpace.webdb.onMaterialError);
 	});
+	//refresh the ui
+	startEstimation(sessionStorage.est_id);
 };
 
 ////////////////////////////////
@@ -170,7 +174,7 @@ function renderMaterialForCurrentEstimate(row) {
 	return "<tr><td>" + row.material + "</td><td>" + row.numberOf + "</td><td>$&nbsp;" + row.cost + " </td><td>$&nbsp;" + row.cost*row.numberOf + " </td>"
 	+"<td><a href='javascript:void(0);'  class='plusMinus' onclick='materialNameSpace.webdb.increaseNumberOf(" + row.ID + "," + row.numberOf + ");'>+</a></td>"
 	+"<td><a href='javascript:void(0);' class='plusMinus'  onclick='materialNameSpace.webdb.decreaseNumberOf(" + row.ID + "," + row.numberOf + ");'>-</a></td>"
-	+"<td> <a href='javascript:void(0);'  onclick='materialNameSpace.webdb.deleteTaskForEstimateID(" + row.ID + ");'>remove</a></td>"
+	+"<td> <a href='javascript:void(0);'  onclick='materialNameSpace.webdb.deleteMaterialForEstimateID(" + row.ID + ");'>remove</a></td>"
 	+"</tr>";
 }
 materialNameSpace.webdb.increaseNumberOf = function(id, numberOf) {
@@ -193,12 +197,22 @@ materialNameSpace.webdb.changeNumberOfSuccess = function(tx, r) {
 	console.log("fn changeNumberOfSuccess");
 	materialNameSpace.webdb.getAllMaterialItemsForEstimateID(loadMaterialItemsForEstimateID);
 };
-materialNameSpace.webdb.deleteTaskForEstimateID = function(id) {
-	console.log("fn deleteTaskForEstimateID");
+materialNameSpace.webdb.deleteMaterialForEstimateID = function(id) {
+	console.log("fn deleteMaterialForEstimateID");
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("DELETE FROM materialForEstimates WHERE ID=?", [id], materialNameSpace.webdb.onTaskSuccess, materialNameSpace.webdb.onTaskError);
+		tx.executeSql("DELETE FROM materialForEstimates WHERE ID=?", [id], materialNameSpace.webdb.onMaterialDeleteSuccess, materialNameSpace.webdb.onMaterialError);
 	});
+};
+materialNameSpace.webdb.onMaterialDeleteSuccess = function(tx, r) {
+	console.log("fn onMaterialDeleteSuccess");
+	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
+	startEstimation(sessionStorage.est_id);
+};
+materialNameSpace.webdb.onMaterialInsertSuccess = function(tx, r) {
+	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
+	console.log("fn onMaterialInsertSuccess");
+	startEstimation(sessionStorage.est_id);
 };
 /////>>>>>>>>>>>>>>>>>>
 
