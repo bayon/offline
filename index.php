@@ -10,6 +10,7 @@
 	<p> Software tasks for estimate creation.</p>
      <ul>
      	<li>enter hourly rate,store rate per min as sessionStorage.rate_per_min </li>
+     	<li>use rate_per_min to calculate subtotal for tasks</li>
      	<li>prevent duplicate entries into estimate tasks or materials</li>
      	<li>upon estimate deletion, remove orphans tasks and materials.</li>
      	
