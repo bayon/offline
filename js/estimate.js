@@ -74,12 +74,16 @@ function addEstimate() {
 	 
 	 
 	var rate_per_hour = parseFloat(hrRate.value);
+	sessionStorage.rate_per_hour = rate_per_hour;
 	//alert(rate_per_hour);
 	var rate_per_minute = (rate_per_hour/60).toFixed(2);
+	
 	//alert(rate_per_minute);
 	sessionStorage.rate_per_min = rate_per_minute;
 	estimateNameSpace.webdb.addEstimate(estimate.value);
 	estimate.value = "";
+	hrRate.value = "";
+	
 }
 
 estimateNameSpace.webdb.selectEstimate = function(id) {
@@ -118,6 +122,9 @@ function startEstimation(id) {
 	//INIT CURRENT ESTIMATE TASKS AND MATERIALS
 	initTasksForEstimateID();
 	initMaterialsForEstimateID();
+	
+	document.getElementById('ratePerHour').value = sessionStorage.rate_per_hour;
+	document.getElementById('ratePerMin').value = sessionStorage.rate_per_min;
 
 }
 

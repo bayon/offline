@@ -43,8 +43,12 @@ include_once ('constants.php');
 		</p>
 		<ul id="materialItemsForEstimates"></ul>
 		</div>
-		
-		
+		<div>
+			rate per hour:<input id='ratePerHour' type='text' value=''/> 
+		</div>
+		<div>
+			rate per minute:<input id='ratePerMin' type='text' value=''/> 
+		</div>
 		<div style='float:left;border:solid 1px #eee;'>
 			<p>
 			Current Tasks:

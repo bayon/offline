@@ -153,7 +153,7 @@ materialNameSpace.webdb.getAllMaterialItemsForEstimateID = function(renderFunc) 
 };
  function loadMaterialItemsForEstimateID(tx, rs) {
  	console.log("fn loadMaterialItemsForEstimateID"); 
-	var rowOutput = "<tr><th>Material</th><th>#</th><th>each</th><th>subtotal</th><th colspan=3>actions</th></tr>";
+	var rowOutput = "<tr><th>Material</th><th>#</th><th>each</th><th>subtotal</th><th colspan=2>how many</th><th>action</th></tr>";
 	var materialItems = document.getElementById("materialItemsForCurrentEstimate");
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderMaterialForCurrentEstimate(rs.rows.item(i));
