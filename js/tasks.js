@@ -132,3 +132,76 @@ taskNameSpace.webdb.onTaskSelectSuccess = function(tx, rs) {
 };
 
 ////////////////////////////////
+
+///-------------------------------------------
+ 
+function initTasksForEstimateID() {
+	console.log("fn initTasksForEstimateID");
+	taskNameSpace.webdb.open();
+	
+	taskNameSpace.webdb.getAllTodoItemsForEstimateID(loadTodoItemsForEstimateID);//getAllTodoItemsForEstimateID(loadTodoItemsForEstimateID)
+
+}
+taskNameSpace.webdb.getAllTodoItemsForEstimateID = function(renderFunc) {
+	console.log("fn getAllTodoItemsForEstimateID");
+	var db = taskNameSpace.webdb.db;
+	var est_id = sessionStorage.est_id;
+	 
+	db.transaction(function(tx) {
+		tx.executeSql("SELECT * FROM todoForEstimate WHERE est_id = "+est_id+"", [], renderFunc, taskNameSpace.webdb.onTaskError);
+	});
+};
+ function loadTodoItemsForEstimateID(tx, rs) {
+ 	console.log("fn loadTodoItemsForEstimateID"); 
+	var rowOutput = "<tr><th>Task</th><th># of</th><th>minutes each</th><th colspan=3>actions</th></tr>";
+	var todoItems = document.getElementById("todoItemsForCurrentEstimate");
+	for (var i = 0; i < rs.rows.length; i++) {
+		rowOutput += renderTodoForCurrentEstimate(rs.rows.item(i));
+	}
+
+	todoItems.innerHTML = rowOutput;
+}
+function renderTodoForCurrentEstimateORIGINAL(row) {
+	console.log("fn renderTodoForCurrentEstimateORIGINAL");
+
+	return "<li>" + row.todo + ":" + row.minutes + " [<a href='javascript:void(0);'  onclick='taskNameSpace.webdb.selectTodo(" + row.ID + ");'>Select</a>]</li>";
+
+}
+///-------------------------------------------
+/////>>>>>>>>>>>>>>>>>>
+function renderTodoForCurrentEstimate(row) {
+	 console.log("fn renderTodoForCurrentEstimate");
+	return "<tr><td>" + row.todo + "</td><td>" + row.repititions + "</td><td>" + row.minutes + " </td>"
+	+"<td><a href='javascript:void(0);'  class='plusMinus' onclick='taskNameSpace.webdb.increaseNumberOf(" + row.ID + "," + row.repititions + ");'>+</a></td>"
+	+"<td><a href='javascript:void(0);' class='plusMinus'  onclick='taskNameSpace.webdb.decreaseNumberOf(" + row.ID + "," + row.repititions + ");'>-</a></td>"
+	+"<td> <a href='javascript:void(0);'  onclick='taskNameSpace.webdb.deleteTaskForEstimateID(" + row.ID + ");'>Delete</a></td>"
+	+"</tr>";
+}
+taskNameSpace.webdb.increaseNumberOf = function(id, numberOf) {
+	 console.log("fn increaseNumberOf");
+	var db = taskNameSpace.webdb.db;
+	db.transaction(function(tx) {
+		var additionalTime = numberOf + 1;
+		tx.executeSql("Update todoForEstimate SET repititions = ? WHERE ID=?", [additionalTime, id], taskNameSpace.webdb.changeNumberOfSuccess, taskNameSpace.webdb.onThingError);
+	});
+};
+taskNameSpace.webdb.decreaseNumberOf = function(id, numberOf) {
+	 console.log("fn decreaseNumberOf");
+	var db = taskNameSpace.webdb.db;
+	db.transaction(function(tx) {
+		var decreasedTime = numberOf - 1;
+		tx.executeSql("Update todoForEstimate SET repititions = ? WHERE ID=?", [decreasedTime, id], taskNameSpace.webdb.changeNumberOfSuccess, taskNameSpace.webdb.onThingError);
+	});
+};
+taskNameSpace.webdb.changeNumberOfSuccess = function(tx, r) {
+	console.log("fn changeNumberOfSuccess");
+	taskNameSpace.webdb.getAllTodoItemsForEstimateID(loadTodoItemsForEstimateID);
+};
+taskNameSpace.webdb.deleteTaskForEstimateID = function(id) {
+	console.log("fn deleteTaskForEstimateID");
+	var db = taskNameSpace.webdb.db;
+	db.transaction(function(tx) {
+		tx.executeSql("DELETE FROM todoForEstimate WHERE ID=?", [id], taskNameSpace.webdb.onTaskSuccess, taskNameSpace.webdb.onTaskError);
+	});
+};
+/////>>>>>>>>>>>>>>>>>>

@@ -44,11 +44,11 @@ include_once ('constants.php');
 		</div>
 		
 		
-		<div style='float:right;border:solid 1px #eee;'>
+		<div style='float:left;border:solid 1px #eee;'>
 			<p>
 			Current Tasks:
 		</p>
-		<ul id="todoItemsForCurrentEstimate"></ul>
+		<table id="todoItemsForCurrentEstimate" border=1 class="estimatorTable"></table>
 		<p>
 			Current Materials:
 		</p>

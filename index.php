@@ -9,7 +9,8 @@
 		
 	<p> Software tasks for estimate creation.</p>
      <ul>
-     	
+     	<li>prevent duplicate entries into estimate tasks or materials</li>
+     	<li>upon estimate deletion, remove orphans tasks and materials.</li>
      	<li>display selected  "materials"</li>
   			<ul>
   				<li>add number needed and calculate subtotal cost</li>

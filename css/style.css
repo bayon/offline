@@ -17,3 +17,6 @@ body a {
 .navigation_container a {
 	color: white;
 }
+.estimatorTable{
+	border-collapse:collapse;
+}

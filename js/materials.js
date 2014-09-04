@@ -73,7 +73,7 @@ function addMaterial() {
 	material.value = "";
 	material_cost.value = "";
 }
-////////////////
+////////////////GENERAL
 function initMaterialsForEstimates() {
 	console.log('fn initMaterialsForEstimates');
 	materialNameSpace.webdb.open();
@@ -128,3 +128,39 @@ materialNameSpace.webdb.onMaterialSelectSuccess = function(tx, rs) {
 };
 
 ////////////////////////////////
+
+///-------------------------------------------CURRENT
+ 
+function initMaterialsForEstimateID() {
+	console.log("fn initMaterialsForEstimateID");
+	materialNameSpace.webdb.open();
+	
+	materialNameSpace.webdb.getAllMaterialItemsForEstimateID(loadMaterialItemsForEstimateID);//getAllMaterialItemsForEstimateID(loadMaterialItemsForEstimateID)
+
+}
+materialNameSpace.webdb.getAllMaterialItemsForEstimateID = function(renderFunc) {
+	console.log("fn getAllMaterialItemsForEstimateID");
+	var db = materialNameSpace.webdb.db;
+	var est_id = sessionStorage.est_id;
+	
+	db.transaction(function(tx) {
+		tx.executeSql("SELECT * FROM materialForEstimates WHERE est_id = "+est_id+"", [], renderFunc, materialNameSpace.webdb.onTaskError);
+	});
+};
+ function loadMaterialItemsForEstimateID(tx, rs) {
+ 	console.log("fn loadMaterialItemsForEstimateID"); 
+	var rowOutput = "";
+	var materialItems = document.getElementById("materialItemsForCurrentEstimate");
+	for (var i = 0; i < rs.rows.length; i++) {
+		rowOutput += renderMaterialForCurrentEstimate(rs.rows.item(i));
+	}
+
+	materialItems.innerHTML = rowOutput;
+}
+function renderMaterialForCurrentEstimate(row) {
+	console.log("fn renderMaterialForCurrentEstimate");
+
+	return "<li>" + row.material + ":" + row.cost + " [<a href='javascript:void(0);'  onclick='materialNameSpace.webdb.selectMaterial(" + row.ID + ");'>Select</a>]</li>";
+
+}
+///------------------------------------------- 

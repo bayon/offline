@@ -100,13 +100,16 @@ function startEstimation(id) {
 
 	// SET CURRENT ESTIMATE ID
 	sessionStorage.est_id = id;
-
-	//other tables
+	taskNameSpace.webdb.open();
+	taskNameSpace.webdb.createTaskTableForEstimates();
+	
+	//INIT ALL AVAILABLE TASKS AND MATERIALS
 	initTasksForEstimates();
 	initMaterialsForEstimates();
 
-	taskNameSpace.webdb.open();
-	taskNameSpace.webdb.createTaskTableForEstimates();
+	//INIT CURRENT ESTIMATE TASKS AND MATERIALS
+	initTasksForEstimateID();
+	initMaterialsForEstimateID();
 
 }
 
