@@ -52,7 +52,7 @@ include_once ('constants.php');
 		<p>
 			Current Materials:
 		</p>
-		<ul id="materialItemsForCurrentEstimate"></ul>
+		<table id="materialItemsForCurrentEstimate"  border=1 class="estimatorTable"></table>
 		</div>
 		
 
