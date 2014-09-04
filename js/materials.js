@@ -29,7 +29,7 @@ materialNameSpace.webdb.onMaterialsError = function(tx, e) {
 };
 
 materialNameSpace.webdb.onMaterialsSuccess = function(tx, r) {
-	// re-render the data.
+	
 	materialNameSpace.webdb.getAllMaterialItems(loadMaterialItems);
 };
 
@@ -74,32 +74,32 @@ function addMaterial() {
 	material_cost.value = "";
 }
 ////////////////
-function initMaterialsForEstimate() {
-	console.log('fn initMaterialsForEstimate');
+function initMaterialsForEstimates() {
+	console.log('fn initMaterialsForEstimates');
 	materialNameSpace.webdb.open();
-	materialNameSpace.webdb.createMaterialTableForEstimate();
-	materialNameSpace.webdb.getAllMaterialItemsForEstimate(loadMaterialItemsForEstimate);
+	materialNameSpace.webdb.createMaterialTableForEstimates();
+	materialNameSpace.webdb.getAllMaterialItemsForEstimates(loadMaterialItemsForEstimates);
 	
 }
-materialNameSpace.webdb.getAllMaterialItemsForEstimate = function(renderFunc) {
-	console.log('fn getAllMaterialItemsForEstimate');
+materialNameSpace.webdb.getAllMaterialItemsForEstimates = function(renderFunc) {
+	console.log('fn getAllMaterialItemsForEstimates');
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM material", [], renderFunc, materialNameSpace.webdb.onMaterialError);
 	});
 };
-function loadMaterialItemsForEstimate(tx, rs) {
-	console.log('fn loadMaterialItemsForEstimate');
+function loadMaterialItemsForEstimates(tx, rs) {
+	console.log('fn loadMaterialItemsForEstimates');
 	var rowOutput = "";
-	var materialItems = document.getElementById("materialItemsForEstimate");
+	var materialItems = document.getElementById("materialItemsForEstimates");
 	for (var i = 0; i < rs.rows.length; i++) {
-		rowOutput += renderMaterialForEstimate(rs.rows.item(i));
+		rowOutput += renderMaterialForEstimates(rs.rows.item(i));
 	}
 
 	materialItems.innerHTML = rowOutput;
 }
-function renderMaterialForEstimate(row) {
-	console.log('fn renderMaterialForEstimate');
+function renderMaterialForEstimates(row) {
+	console.log('fn renderMaterialForEstimates');
 	return "<li>" + row.material + ":" + row.cost + " [<a href='javascript:void(0);'  onclick='materialNameSpace.webdb.selectMaterial(" + row.ID + ");'>Select</a>]</li>";
 }
 materialNameSpace.webdb.selectMaterial = function(id) {
@@ -110,24 +110,20 @@ materialNameSpace.webdb.selectMaterial = function(id) {
 	});
 };
 
-materialNameSpace.webdb.createMaterialTableForEstimate = function() {
-	console.log('fn createMaterialTableForEstimate');
+materialNameSpace.webdb.createMaterialTableForEstimates = function() {
+	console.log('fn createMaterialTableForEstimates');
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("CREATE TABLE IF NOT EXISTS materialForEstimate(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, material TEXT, cost INTEGER, added_on DATETIME)", []);
+		tx.executeSql("CREATE TABLE IF NOT EXISTS materialForEstimates(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, material TEXT, cost INTEGER, added_on DATETIME)", []);
 	});
 };
 materialNameSpace.webdb.onMaterialSelectSuccess = function(tx, rs) {
-	// re-render the data.
 	console.log("fn onMaterialSelectSuccess");
-	//materialNameSpace.webdb.getAllTodoItems(loadTodoItems);
-	console.log(  rs.rows.item(0));
-	console.log(  rs.rows.item(0).material);
 	material = new Material(rs.rows.item(0).ID,rs.rows.item(0).material,rs.rows.item(0).cost,rs.rows.item(0).added_on);
 	var db = materialNameSpace.webdb.db;
 	var est_id = sessionStorage.est_id;
 	db.transaction(function(tx) {
-		tx.executeSql("INSERT INTO materialForEstimate(ID, est_id, material , cost , added_on ) VALUES (NULL,'"+est_id+"','"+material.material+"','"+material.cost+"','"+material.added_on+"');", []);
+		tx.executeSql("INSERT INTO materialForEstimates(ID, est_id, material , cost , added_on ) VALUES (NULL,'"+est_id+"','"+material.material+"','"+material.cost+"','"+material.added_on+"');", []);
 	});
 };
 

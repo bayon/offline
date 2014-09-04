@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<link rel='stylesheet' type='text/css' href='css/style.css'>
-		<!--<script type='text/javascript' src='js/tasks.js'></script>-->
 	</head>
 	<body >
 		<?php include_once('navigation.php'); ?>
@@ -31,7 +30,5 @@
      		</ul>
   	</ul>
   	
-  	
-     
 	</body>
 </html>​

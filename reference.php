@@ -1,16 +1,18 @@
-<?php include_once('constants.php'); ?>
+<?php
+include_once ('constants.php');
+?>
 <html>
 	<head>
 		<link rel='stylesheet' type='text/css' href='css/style.css'>
-		<!--<script type='text/javascript' src='js/tasks.js'></script>-->
 	</head>
 	<body >
-		<?php include_once ('navigation.php'); ?>
-		
+		<?php
+		include_once ('navigation.php');
+		?>
+
 		<h3>Reference</h3>
 		<a href="http://www.forteworks.com/ref/index.php" target='_blank'>forteworks reference</a>
-		 
+
 	</body>
 </html>​
-
 

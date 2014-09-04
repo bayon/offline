@@ -1,22 +1,19 @@
 body {
 	color: #222;
 	font: 14px Arial;
-	margin:0;
-	
+	margin: 0;
 }
-
 body a {
 	color: #3D5C9D;
 	text-decoration: none;
-	margin-right:40px;
+	margin-right: 40px;
 }
-.navigation_container{
-	text-align:center;
-	background-color:#6F84FF;
-	
+.navigation_container {
+	text-align: center;
+	background-color: #6F84FF;
+	border-bottom: 1px solid green;
+	border-top: 1px solid green;
 }
-.navigation_container a{
-	 
-	color:white;
-	
+.navigation_container a {
+	color: white;
 }

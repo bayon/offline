@@ -29,7 +29,6 @@ taskNameSpace.webdb.onTaskError = function(tx, e) {
 };
 
 taskNameSpace.webdb.onTaskSuccess = function(tx, r) {
-	// re-render the data.
 	taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
 };
 
@@ -52,7 +51,6 @@ function loadTodoItems(tx, rs) {
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderTodo(rs.rows.item(i));
 	}
-
 	todoItems.innerHTML = rowOutput;
 }
 
@@ -75,70 +73,62 @@ function addTodo() {
 	minutes.value = "";
 }
 
-
 ////////////////
-function initTasksForEstimate() {
+function initTasksForEstimates() {
 	taskNameSpace.webdb.open();
 	taskNameSpace.webdb.createTaskTable();
-	taskNameSpace.webdb.getAllTodoItemsForEstimate(loadTodoItemsForEstimate);
-	
+	taskNameSpace.webdb.getAllTodoItemsForEstimates(loadTodoItemsForEstimates);
+
 }
-taskNameSpace.webdb.getAllTodoItemsForEstimate = function(renderFunc) {
+
+taskNameSpace.webdb.getAllTodoItemsForEstimates = function(renderFunc) {
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM todo", [], renderFunc, taskNameSpace.webdb.onTaskError);
 	});
 };
-function loadTodoItemsForEstimate(tx, rs) {
+function loadTodoItemsForEstimates(tx, rs) {
 	var rowOutput = "";
-	var todoItems = document.getElementById("todoItemsForEstimate");
+	var todoItems = document.getElementById("todoItemsForEstimates");
 	for (var i = 0; i < rs.rows.length; i++) {
-		rowOutput += renderTodoForEstimate(rs.rows.item(i));
+		rowOutput += renderTodoForEstimates(rs.rows.item(i));
 	}
 
 	todoItems.innerHTML = rowOutput;
 }
-function renderTodoForEstimate(row) {
-	console.log("fn renderTodoForEstimate");
-	 // instantiate new task obj here and pass it as param.
-	 var task = new Task(row.ID, row.todo, row.minutes,row.added_on);
-	 //alert(row.ID +"---"+row.todo +"---"+row.minutes +"---"+row.added_on +"---");
-	 var array = new Array('one','two','three');
-	// task.reveal();
+
+function renderTodoForEstimates(row) {
+	console.log("fn renderTodoForEstimates");
+
 	return "<li>" + row.todo + ":" + row.minutes + " [<a href='javascript:void(0);'  onclick='taskNameSpace.webdb.selectTodo(" + row.ID + ");'>Select</a>]</li>";
 
 }
+
 taskNameSpace.webdb.selectTodo = function(id) {
-	console.log("fn selectTodo"+id);
-	
-	//task.reveal();
-	
+	console.log("fn selectTodo" + id);
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM todo WHERE ID=?", [id], taskNameSpace.webdb.onTaskSelectSuccess, taskNameSpace.webdb.onTaskError);
 	});
-	
+
 };
 
-taskNameSpace.webdb.createTaskTableForEstimate = function() {
+taskNameSpace.webdb.createTaskTableForEstimates = function() {
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("CREATE TABLE IF NOT EXISTS todoForEstimate(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, todo TEXT, minutes INTEGER, repititions INTEGER,totalMinutes INTEGER,totalCost FLOAT, added_on DATETIME)", []);
 	});
 };
 taskNameSpace.webdb.onTaskSelectSuccess = function(tx, rs) {
-	// re-render the data.
 	console.log("fn onTaskSelectSuccess");
-	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
-	console.log(  rs.rows.item(0));
-	console.log(  rs.rows.item(0).todo);
-	task = new Task(rs.rows.item(0).ID,rs.rows.item(0).todo,rs.rows.item(0).minutes,rs.rows.item(0).added_on);
+	console.log(rs.rows.item(0));
+	console.log(rs.rows.item(0).todo);
+	task = new Task(rs.rows.item(0).ID, rs.rows.item(0).todo, rs.rows.item(0).minutes, rs.rows.item(0).added_on);
 	var est_id = sessionStorage.est_id;
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("INSERT INTO todoForEstimate(ID, est_id, todo , minutes , added_on ) VALUES (NULL,'"+est_id+"','"+task.todo+"','"+task.minutes+"','"+task.added_on+"');", []);
+		tx.executeSql("INSERT INTO todoForEstimate(ID, est_id, todo , minutes , added_on ) VALUES (NULL,'" + est_id + "','" + task.todo + "','" + task.minutes + "','" + task.added_on + "');", []);
 	});
 };
-
 
 ////////////////////////////////

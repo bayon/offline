@@ -33,7 +33,6 @@ estimateNameSpace.webdb.onEstimateSuccess = function(tx, r) {
 	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);
 };
 
-
 estimateNameSpace.webdb.deleteEstimate = function(id) {
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
@@ -44,8 +43,9 @@ function initEstimate() {
 	estimateNameSpace.webdb.open();
 	estimateNameSpace.webdb.createEstimateTable();
 	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);
-	
+
 }
+
 estimateNameSpace.webdb.getAllEstimateItems = function(renderFunc) {
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
@@ -67,15 +67,12 @@ function renderEstimate(row) {
 	return "<li>" + row.estimate + " [<a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.selectEstimate(" + row.ID + ");'>Select</a>][<a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.deleteEstimate(" + row.ID + ");'>Delete</a>]</li>";
 }
 
-
-
 function addEstimate() {
 	console.log('fn addEstimate');
 	var estimate = document.getElementById("estimate");
 	estimateNameSpace.webdb.addEstimate(estimate.value);
 	estimate.value = "";
 }
- 
 
 estimateNameSpace.webdb.selectEstimate = function(id) {
 	console.log('fn addEstimate');
@@ -84,7 +81,7 @@ estimateNameSpace.webdb.selectEstimate = function(id) {
 		tx.executeSql("SELECT * FROM estimate WHERE ID=?", [id], estimateNameSpace.webdb.onEstimateSelectSuccess, estimateNameSpace.webdb.onEstimateError);
 	});
 };
-	
+
 estimateNameSpace.webdb.onEstimateSelectSuccess = function(tx, r) {
 	// re-render the data.
 	var rowOutput = "";
@@ -94,30 +91,22 @@ estimateNameSpace.webdb.onEstimateSelectSuccess = function(tx, r) {
 	}
 	estimateItems.innerHTML = rowOutput;
 };
- 
 
 function renderSelectedEstimate(row) {
-	return "<li style='font-weight:bold;'>" + row.estimate + "</li>"+
-	" <input type='hidden' id='selectedEstimate' value='"+row.ID +"'/>  "+
-	"<button onclick='startEstimation("+row.ID +");' >start estimation</button>";
+	return "<li style='font-weight:bold;'>" + row.estimate + "</li>" + " <input type='hidden' id='selectedEstimate' value='" + row.ID + "'/>  " + "<button onclick='startEstimation(" + row.ID + ");' >start estimation</button>";
 }
 
-function startEstimation(id){
-	//alert('fn startEstimation:'+id);
-	//model
-	//var arrayOfTasks = new Array();
-	//var arrayOfMaterials = new Array();
-	//var estimate = new Estimate(id, arrayOfTasks, arrayOfMaterials);
+function startEstimation(id) {
+
 	// SET CURRENT ESTIMATE ID
 	sessionStorage.est_id = id;
-	//alert(sessionStorage.est_id);
-	//other tables
-	initTasksForEstimate();
-	initMaterialsForEstimate();
-	//doOutsideFunction(estimate);
-	taskNameSpace.webdb.open();
-	taskNameSpace.webdb.createTaskTableForEstimate();
-	
-}
 
+	//other tables
+	initTasksForEstimates();
+	initMaterialsForEstimates();
+
+	taskNameSpace.webdb.open();
+	taskNameSpace.webdb.createTaskTableForEstimates();
+
+}
 

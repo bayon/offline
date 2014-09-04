@@ -1,14 +1,16 @@
-<?php include_once('constants.php'); ?>
+<?php
+include_once ('constants.php');
+ ?>
 <!DOCTYPE html>
 <html>
   <head>
      <link rel='stylesheet' type='text/css' href='css/style.css'>
      <script type='text/javascript' src='js/materials.js'></script>
-     
-
   </head>
   <body onload="initMaterials();">
-  	<?php include_once('navigation.php'); ?>
+  	<?php
+	include_once ('navigation.php');
+ ?>
   	 
 		<h3>Materials</h3>
   	 
