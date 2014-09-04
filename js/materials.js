@@ -149,7 +149,7 @@ materialNameSpace.webdb.getAllMaterialItemsForEstimateID = function(renderFunc) 
 };
  function loadMaterialItemsForEstimateID(tx, rs) {
  	console.log("fn loadMaterialItemsForEstimateID"); 
-	var rowOutput = "<tr><th>Material</th><th># of</th><th>cost each</th><th colspan=3>actions</th></tr>";
+	var rowOutput = "<tr><th>Material</th><th>#</th><th>each</th><th>subtotal</th><th colspan=3>actions</th></tr>";
 	var materialItems = document.getElementById("materialItemsForCurrentEstimate");
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderMaterialForCurrentEstimate(rs.rows.item(i));
@@ -167,7 +167,7 @@ function renderMaterialForCurrentEstimate(row) {
 /////>>>>>>>>>>>>>>>>>>
 function renderMaterialForCurrentEstimate(row) {
 	 console.log("fn renderMaterialForCurrentEstimate");
-	return "<tr><td>" + row.material + "</td><td>" + row.numberOf + "</td><td>" + row.cost + " </td>"
+	return "<tr><td>" + row.material + "</td><td>" + row.numberOf + "</td><td>$&nbsp;" + row.cost + " </td><td>$&nbsp;" + row.cost*row.numberOf + " </td>"
 	+"<td><a href='javascript:void(0);'  class='plusMinus' onclick='materialNameSpace.webdb.increaseNumberOf(" + row.ID + "," + row.numberOf + ");'>+</a></td>"
 	+"<td><a href='javascript:void(0);' class='plusMinus'  onclick='materialNameSpace.webdb.decreaseNumberOf(" + row.ID + "," + row.numberOf + ");'>-</a></td>"
 	+"<td> <a href='javascript:void(0);'  onclick='materialNameSpace.webdb.deleteTaskForEstimateID(" + row.ID + ");'>remove</a></td>"

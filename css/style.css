@@ -20,3 +20,6 @@ body a {
 .estimatorTable{
 	border-collapse:collapse;
 }
+.estimatorTable td{
+	min-width:25px;
+}
