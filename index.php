@@ -14,14 +14,16 @@
      <ul>
      	
      	
-     	<li>prevent duplicate entries into estimate tasks or materials</li>
-     	<li>upon estimate deletion, remove orphans tasks and materials.both UI and DB</li>
+     	<li>upon selecting a task or material for an estimate, others get deleted.</li>
      	<li>apply appcache </li>
      	<li>RWD and more user-friendly</li>
   		
   	</ul>
   	<p> Done</p>
   	<ul>
+  		<li>upon estimate deletion, remove orphans tasks and materials.both UI and DB</li>
+     	<li>FOREIGN KEY (sketchID) REFERENCES Sketch (sketchId), </li>
+  		<li>prevent duplicate entries USED SQL UNIQUE ON CONFLICT REPLACE</li>
   		<li>display hourly rate or rate per min.</li>
   		<li>enter hourly rate,store rate per min as sessionStorage.rate_per_min </li>
   		<li>use rate_per_min to calculate subtotal for tasks</li>
@@ -43,4 +45,4 @@
   </div>
 	</body>
 </html>
-<!-- new Material -->​
+<!-- new Material  prevent duplicates with SQL sqlite: UNIQUE ON CONFLICT REPLACE   remove -->​

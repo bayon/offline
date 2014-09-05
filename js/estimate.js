@@ -11,16 +11,19 @@ estimateNameSpace.webdb.open = function() {
 estimateNameSpace.webdb.createEstimateTable = function() {
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("CREATE TABLE IF NOT EXISTS estimate(ID INTEGER PRIMARY KEY ASC, estimate TEXT, added_on DATETIME)", []);
+		tx.executeSql("CREATE TABLE IF NOT EXISTS estimate(ID INTEGER PRIMARY KEY ASC, estimate TEXT  UNIQUE ON CONFLICT REPLACE,hrRate FLOAT,rate_per_minute FLOAT, added_on DATETIME)", []);
 	});
 };
 
-estimateNameSpace.webdb.addEstimate = function(estimateText) {
+estimateNameSpace.webdb.addEstimate = function(estimateText,hrRate,rate_per_minute) {
 	console.log('fn addEstimate');
 	var db = estimateNameSpace.webdb.db;
+	 
+	 
+	 
 	db.transaction(function(tx) {
 		var addedOn = new Date();
-		tx.executeSql("INSERT INTO estimate(estimate, added_on) VALUES (?,?)", [estimateText, addedOn], estimateNameSpace.webdb.onEstimateSuccess, estimateNameSpace.webdb.onEstimateError);
+		tx.executeSql("INSERT INTO estimate(estimate, hrRate,rate_per_minute, added_on) VALUES (?,?,?,?)", [estimateText,hrRate,rate_per_minute, addedOn], estimateNameSpace.webdb.onEstimateSuccess, estimateNameSpace.webdb.onEstimateError);
 	});
 };
 
@@ -34,11 +37,32 @@ estimateNameSpace.webdb.onEstimateSuccess = function(tx, r) {
 };
 
 estimateNameSpace.webdb.deleteEstimate = function(id) {
+	console.log('delete estimate');
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("DELETE FROM estimate WHERE ID=?", [id], estimateNameSpace.webdb.onEstimateSuccess, estimateNameSpace.webdb.onEstimateError);
+		tx.executeSql("DELETE FROM estimate WHERE ID=?", [id], estimateNameSpace.webdb.onEstimateDeleteSuccess, estimateNameSpace.webdb.onEstimateError);
 	});
+	
+	
 };
+estimateNameSpace.webdb.onEstimateDeleteSuccess = function(tx, r) {
+	
+	//CLEAR UI AFTER ESTIMATE DELETION
+	//FAIL var materialItemsForCurrentEstimate = document.getElementById("materialItemsForCurrentEstimate");
+	//materialItemsForCurrentEstimate.value="";
+	//materialItemsForCurrentEstimate
+	console.log('clear orphans ');
+	materialNameSpace.webdb.deleteMaterialForEstimateID(sessionStorage.est_id);
+	taskNameSpace.webdb.deleteTaskForEstimateID(sessionStorage.est_id);
+	console.log('clear UI ');
+	sessionStorage.est_id = 0;
+	initMaterialsForEstimateID();
+	initTasksForEstimateID();
+	//sessionStorage.est_id = 0;
+	// FAILED TO REMOVE ORPHANS HERE  re-render the data.
+	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);
+};
+
 function initEstimate() {
 	estimateNameSpace.webdb.open();
 	estimateNameSpace.webdb.createEstimateTable();
@@ -80,7 +104,7 @@ function addEstimate() {
 	
 	//alert(rate_per_minute);
 	sessionStorage.rate_per_min = rate_per_minute;
-	estimateNameSpace.webdb.addEstimate(estimate.value);
+	estimateNameSpace.webdb.addEstimate(estimate.value,rate_per_hour,rate_per_minute);
 	estimate.value = "";
 	hrRate.value = "";
 	
@@ -110,6 +134,7 @@ function renderSelectedEstimate(row) {
 
 function startEstimation(id) {
 	//sleep(1000);// let any db changes catch up
+	// L E F T   O F F  H E R E  
 	// SET CURRENT ESTIMATE ID
 	sessionStorage.est_id = id;
 	taskNameSpace.webdb.open();

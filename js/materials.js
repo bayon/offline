@@ -11,7 +11,7 @@ materialNameSpace.webdb.open = function() {
 materialNameSpace.webdb.createMaterialsTable = function() {
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("CREATE TABLE IF NOT EXISTS material(ID INTEGER PRIMARY KEY ASC, material TEXT, cost FLOAT, added_on DATETIME)", []);
+		tx.executeSql("CREATE TABLE IF NOT EXISTS material(ID INTEGER PRIMARY KEY ASC, material TEXT UNIQUE ON CONFLICT REPLACE, cost FLOAT, added_on DATETIME  )", []);
 	});
 };
 
@@ -73,6 +73,11 @@ function addMaterial() {
 	material.value = "";
 	material_cost.value = "";
 }
+
+//[[[[[[[[[[[[[[[[[[[[DUPLICATE CHECK]]]]]]]]]]]]]]]]]]]]
+ // use SQL to prevent duplicates: CREATE TABLE a (i INT, j INT, UNIQUE(i, j) ON CONFLICT REPLACE);
+//[[[[[[[[[[[[[[[[[[[[[[DUPLICATE CHECK END]]]]]]]]]]]]]]]]]]]]]]
+
 ////////////////GENERAL
 function initMaterialsForEstimates() {
 	console.log('fn initMaterialsForEstimates');
@@ -115,7 +120,10 @@ materialNameSpace.webdb.createMaterialTableForEstimates = function() {
 	console.log('fn createMaterialTableForEstimates');
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("CREATE TABLE IF NOT EXISTS materialForEstimates(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, material TEXT, cost INTEGER, numberOf INTEGER, added_on DATETIME)", []);
+		tx.executeSql("CREATE TABLE IF NOT EXISTS materialForEstimates(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, material TEXT  UNIQUE ON CONFLICT REPLACE, cost INTEGER, numberOf INTEGER, added_on DATETIME )", []);
+	//FAIL: FOREIGN KEY (sketchID) REFERENCES Sketch (sketchId)
+
+	
 	});
 };
 materialNameSpace.webdb.onMaterialSelectSuccess = function(tx, rs) {

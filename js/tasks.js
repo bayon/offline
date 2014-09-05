@@ -11,7 +11,7 @@ taskNameSpace.webdb.open = function() {
 taskNameSpace.webdb.createTaskTable = function() {
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("CREATE TABLE IF NOT EXISTS todo(ID INTEGER PRIMARY KEY ASC, todo TEXT, minutes INTEGER, added_on DATETIME)", []);
+		tx.executeSql("CREATE TABLE IF NOT EXISTS todo(ID INTEGER PRIMARY KEY ASC, todo TEXT  UNIQUE ON CONFLICT REPLACE, minutes INTEGER, added_on DATETIME)", []);
 	});
 };
 
@@ -114,9 +114,10 @@ taskNameSpace.webdb.selectTodo = function(id) {
 };
 
 taskNameSpace.webdb.createTaskTableForEstimates = function() {
+	console.log('fn createTaskTableForEstimates');
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("CREATE TABLE IF NOT EXISTS todoForEstimate(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, todo TEXT, minutes INTEGER, repititions INTEGER,totalMinutes INTEGER,totalCost FLOAT, added_on DATETIME)", []);
+		tx.executeSql("CREATE TABLE IF NOT EXISTS todoForEstimate(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, todo TEXT UNIQUE ON CONFLICT REPLACE, minutes INTEGER, repititions INTEGER,totalMinutes INTEGER,totalCost FLOAT, added_on DATETIME)", []);
 	});
 };
 taskNameSpace.webdb.onTaskSelectSuccess = function(tx, rs) {
