@@ -8,6 +8,14 @@ body a {
 	text-decoration: none;
 	margin-right: 40px;
 }
+.content{
+	width:90%;
+	margin-left:5%;
+	margin-right:5%;
+}
+.form_row{
+	margin-top:15px;
+}
 .navigation_container {
 	text-align: center;
 	background-color: #6F84FF;

@@ -1,10 +1,13 @@
 <?php include_once('constants.php'); ?>
 <html>
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 		<link rel='stylesheet' type='text/css' href='css/style.css'>
 	</head>
 	<body >
 		<?php include_once('navigation.php'); ?>
+		<div class="content">
 		<h3>Home</h3>
 		
 	<p> Software tasks for estimate creation.</p>
@@ -13,7 +16,8 @@
      	
      	<li>prevent duplicate entries into estimate tasks or materials</li>
      	<li>upon estimate deletion, remove orphans tasks and materials.both UI and DB</li>
-     	
+     	<li>apply appcache </li>
+     	<li>RWD and more user-friendly</li>
   		
   	</ul>
   	<p> Done</p>
@@ -36,7 +40,7 @@
      			<li>sessionStorage.foo = "bar"</li>
      		</ul>
   	</ul>
-  	
+  </div>
 	</body>
 </html>
 <!-- new Material -->​
