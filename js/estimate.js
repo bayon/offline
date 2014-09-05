@@ -14,7 +14,24 @@ estimateNameSpace.webdb.createEstimateTable = function() {
 		tx.executeSql("CREATE TABLE IF NOT EXISTS estimate(ID INTEGER PRIMARY KEY ASC, estimate TEXT  UNIQUE ON CONFLICT REPLACE,hrRate FLOAT,rate_per_minute FLOAT, added_on DATETIME)", []);
 	});
 };
-
+function addEstimate() {
+	console.log('fn addEstimate');
+	var estimate = document.getElementById("estimate");
+	sessionStorage.estimate_name = estimate.value;
+	var hrRate = document.getElementById("hrRate");
+	var rate_per_hour = parseFloat(hrRate.value);
+	sessionStorage.rate_per_hour = rate_per_hour;
+	var rate_per_minute = (rate_per_hour/60).toFixed(2);
+	sessionStorage.rate_per_min = rate_per_minute;
+	
+	estimateNameSpace.webdb.addEstimate(estimate.value,rate_per_hour,rate_per_minute);
+	//CLEAR THESE ,we only added an estimate we did NOT select it yet.
+	estimate.value = "";
+	hrRate.value = "";
+	sessionStorage.estimate_name ="";
+	sessionStorage.rate_per_hour =0;
+	sessionStorage.rate_per_min=0;
+}
 estimateNameSpace.webdb.addEstimate = function(estimateText,hrRate,rate_per_minute) {
 	console.log('fn addEstimate');
 	var db = estimateNameSpace.webdb.db;
@@ -47,7 +64,7 @@ estimateNameSpace.webdb.deleteEstimate = function(id) {
 };
 estimateNameSpace.webdb.onEstimateDeleteSuccess = function(tx, r) {
 	
-	//CLEAR UI AFTER ESTIMATE DELETION
+	//   C L E A R   U I             --------------AFTER ESTIMATE DELETION
 	var estimate_details = document.getElementById('estimate_details');
 	estimate_details.style.display = "none";
 	//FAIL var materialItemsForCurrentEstimate = document.getElementById("materialItemsForCurrentEstimate");
@@ -58,6 +75,9 @@ estimateNameSpace.webdb.onEstimateDeleteSuccess = function(tx, r) {
 	taskNameSpace.webdb.deleteTaskForEstimateID(sessionStorage.est_id);
 	console.log('clear UI ');
 	sessionStorage.est_id = 0;
+	sessionStorage.rate_per_hour=0;
+	sessionStorage.rate_per_min = 0;
+	sessionStorage.estimate_name="";
 	initMaterialsForEstimateID();
 	initTasksForEstimateID();
 	//sessionStorage.est_id = 0;
@@ -93,27 +113,14 @@ function renderEstimate(row) {
 	return "<tr><td>" + row.estimate + "</td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.selectEstimate(" + row.ID + ");'>Select</a></td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.deleteEstimate(" + row.ID + ");'>Delete</a></td></tr>";
 }
 
-function addEstimate() {
-	console.log('fn addEstimate');
-	var estimate = document.getElementById("estimate");
-	var hrRate = document.getElementById("hrRate");
-	 
-	 
-	var rate_per_hour = parseFloat(hrRate.value);
-	sessionStorage.rate_per_hour = rate_per_hour;
-	//alert(rate_per_hour);
-	var rate_per_minute = (rate_per_hour/60).toFixed(2);
-	
-	//alert(rate_per_minute);
-	sessionStorage.rate_per_min = rate_per_minute;
-	estimateNameSpace.webdb.addEstimate(estimate.value,rate_per_hour,rate_per_minute);
-	estimate.value = "";
-	hrRate.value = "";
-	
-}
+
 
 estimateNameSpace.webdb.selectEstimate = function(id) {
-	console.log('fn addEstimate');
+	console.log('fn selectEstimate');
+	
+	
+	
+	
 	var estimate_details = document.getElementById('estimate_details');
 	estimate_details.style.display = "block";
 	var db = estimateNameSpace.webdb.db;
@@ -123,7 +130,9 @@ estimateNameSpace.webdb.selectEstimate = function(id) {
 };
 
 estimateNameSpace.webdb.onEstimateSelectSuccess = function(tx, r) {
-	// re-render the data.
+	
+//try and set the rate boxes here Math.round
+
 	var rowOutput = "";
 	var estimateItems = document.getElementById("selectedEstimateItem");
 	for (var i = 0; i < r.rows.length; i++) {
@@ -133,7 +142,8 @@ estimateNameSpace.webdb.onEstimateSelectSuccess = function(tx, r) {
 };
 
 function renderSelectedEstimate(row) {
-	return "<tr><td style='font-weight:bold;'>" + row.estimate + "</td><td>" + " <input type='hidden' id='selectedEstimate' value='" + row.ID + "'/>  " + "<button onclick='startEstimation(" + row.ID + ");' >start</button></td></tr>";
+	sessionStorage.rate_per_min=row.rate_per_minute;
+	return "<tr><td style='font-weight:bold;'>" + row.estimate + "</td><td>$"+row.hrRate+"p/hr</td><td>$"+row.rate_per_minute+"p/min</td><td>" + " <input type='hidden' id='selectedEstimate' value='" + row.ID + "'/>  " + "<button onclick='startEstimation(" + row.ID + ");' >start</button></td></tr>";
 }
 
 function startEstimation(id) {
@@ -152,8 +162,8 @@ function startEstimation(id) {
 	initTasksForEstimateID();
 	initMaterialsForEstimateID();
 	
-	document.getElementById('ratePerHour').value = sessionStorage.rate_per_hour;
-	document.getElementById('ratePerMin').value = sessionStorage.rate_per_min;
+	//document.getElementById('ratePerHour').value = sessionStorage.rate_per_hour;
+	//document.getElementById('ratePerMin').value = sessionStorage.rate_per_min;
 
 }
 
