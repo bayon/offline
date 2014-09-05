@@ -16,13 +16,16 @@ include_once ('constants.php');
   		 
    
 		<h3>Tasks</h3>
-    <ul id="todoItems">
-    </ul>
+    <table border=1 class="estimatorTable">
     <form type="post" onsubmit="addTodo(); return false;">
-    <div class='form_row'> task:<input type="text" id="todo" name="todo"  style="width: 50%;" /></div> 
-     <div class='form_row'>  min: <input type="text" id="minutes" name="minutes"  style="width: 50%;" /></div> 
-      <div class='form_row'><input type="submit" value="task"/></div>
+      <tr><td>task</td><td><input type="text" id="todo" name="todo"    /></td> </tr>
+      <tr><td>min</td><td><input type="text" id="minutes" name="minutes"    /></td> </tr>
+       <tr><td><input type="submit" value="+"/></td><td>&nbsp;</td> </tr>
     </form>
+    </table>
+     <table id="todoItems" border=1 class="estimatorTable">
+    </table>
+    
     </div>
   </body>
 </html>​

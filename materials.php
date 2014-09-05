@@ -16,13 +16,18 @@ include_once ('constants.php');
   	 
 		<h3>Materials</h3>
   	 
-    <ul id="materialItems">
-    </ul>
+   
+    <table border=1 class="estimatorTable">
     <form type="post" onsubmit="addMaterial(); return false;">
-      <div class='form_row'>material:<input type="text" id="material" name="material"  style="width: 50%;" /></div>
-      <div class='form_row'>cost:<input type="text" id="material_cost" name="material_cost"  style="width: 50%;" /></div>
-      <div class='form_row'><input type="submit" value="+ material"/>
+    	
+       <tr><td>material:</td><td><input type="text" id="material" name="material"    /></td></tr>
+       <tr><td>cost:</td><td>$&nbsp;<input type="text" id="material_cost" name="material_cost"    /> </td></tr>
+       <tr><td><input type="submit" value="+"/></td><td>&nbsp;</td></tr>
+      
     </form>
+     </table>
+      <table id="materialItems" border=1 class="estimatorTable">
+    </table>
    </div>
   </body>
 </html>​

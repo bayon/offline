@@ -48,6 +48,8 @@ estimateNameSpace.webdb.deleteEstimate = function(id) {
 estimateNameSpace.webdb.onEstimateDeleteSuccess = function(tx, r) {
 	
 	//CLEAR UI AFTER ESTIMATE DELETION
+	var estimate_details = document.getElementById('estimate_details');
+	estimate_details.style.display = "none";
 	//FAIL var materialItemsForCurrentEstimate = document.getElementById("materialItemsForCurrentEstimate");
 	//materialItemsForCurrentEstimate.value="";
 	//materialItemsForCurrentEstimate
@@ -88,7 +90,7 @@ function loadEstimateItems(tx, rs) {
 }
 
 function renderEstimate(row) {
-	return "<li>" + row.estimate + " [<a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.selectEstimate(" + row.ID + ");'>Select</a>][<a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.deleteEstimate(" + row.ID + ");'>Delete</a>]</li>";
+	return "<tr><td>" + row.estimate + "</td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.selectEstimate(" + row.ID + ");'>Select</a></td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.deleteEstimate(" + row.ID + ");'>Delete</a></td></tr>";
 }
 
 function addEstimate() {
@@ -112,6 +114,8 @@ function addEstimate() {
 
 estimateNameSpace.webdb.selectEstimate = function(id) {
 	console.log('fn addEstimate');
+	var estimate_details = document.getElementById('estimate_details');
+	estimate_details.style.display = "block";
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM estimate WHERE ID=?", [id], estimateNameSpace.webdb.onEstimateSelectSuccess, estimateNameSpace.webdb.onEstimateError);
@@ -129,7 +133,7 @@ estimateNameSpace.webdb.onEstimateSelectSuccess = function(tx, r) {
 };
 
 function renderSelectedEstimate(row) {
-	return "<li style='font-weight:bold;'>" + row.estimate + "</li>" + " <input type='hidden' id='selectedEstimate' value='" + row.ID + "'/>  " + "<button onclick='startEstimation(" + row.ID + ");' >start estimation</button>";
+	return "<tr><td style='font-weight:bold;'>" + row.estimate + "</td><td>" + " <input type='hidden' id='selectedEstimate' value='" + row.ID + "'/>  " + "<button onclick='startEstimation(" + row.ID + ");' >start</button></td></tr>";
 }
 
 function startEstimation(id) {

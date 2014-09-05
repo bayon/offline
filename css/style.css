@@ -1,5 +1,5 @@
 body {
-	color: #222;
+	color: #333;
 	font: 14px Arial;
 	margin: 0;
 }
@@ -7,6 +7,9 @@ body a {
 	color: #3D5C9D;
 	text-decoration: none;
 	margin-right: 40px;
+}
+h2,h3{
+	color: #555;
 }
 .content{
 	width:90%;
@@ -18,16 +21,32 @@ body a {
 }
 .navigation_container {
 	text-align: center;
-	background-color: #6F84FF;
-	border-bottom: 1px solid green;
-	border-top: 1px solid green;
+	background-color: #FFB40F;
+	
 }
 .navigation_container a {
 	color: white;
+	 
+	font-size:20px;
+	
+	padding:2px;
+	margin:2px;
 }
 .estimatorTable{
+	width:100%;
+	margin-top:20px;
 	border-collapse:collapse;
+	border:solid 1px #777;
+	
 }
 .estimatorTable td{
 	min-width:25px;
+	padding:2px;
+}
+#estimate_details{
+	margin-top:20px;
+	cccborder:solid 1px #333;
+	float:left;
+	display:none;
+	width:100%;
 }

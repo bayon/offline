@@ -46,7 +46,7 @@ taskNameSpace.webdb.deleteTodo = function(id) {
 	});
 };
 function loadTodoItems(tx, rs) {
-	var rowOutput = "";
+	var rowOutput = "<tr><th>Task</th><th title='Time to complete once.'>Minutes</th><th>Action</th></tr>";
 	var todoItems = document.getElementById("todoItems");
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderTodo(rs.rows.item(i));
@@ -55,7 +55,7 @@ function loadTodoItems(tx, rs) {
 }
 
 function renderTodo(row) {
-	return "<li>" + row.todo + ":" + row.minutes + " [<a href='javascript:void(0);'  onclick='taskNameSpace.webdb.deleteTodo(" + row.ID + ");'>Delete</a>]</li>";
+	return "<tr> <td>" + row.todo + "</td><td>" + row.minutes + " </td><td><a href='javascript:void(0);'  onclick='taskNameSpace.webdb.deleteTodo(" + row.ID + ");'>Delete</a></td></tr>";
 }
 
 function initTasks() {
@@ -100,7 +100,7 @@ function loadTodoItemsForEstimates(tx, rs) {
 function renderTodoForEstimates(row) {
 	console.log("fn renderTodoForEstimates");
 
-	return "<li>" + row.todo + ":" + row.minutes + " [<a href='javascript:void(0);'  onclick='taskNameSpace.webdb.selectTodo(" + row.ID + ");'>Select</a>]</li>";
+	return "<tr><td>" + row.todo + "</td><td>" + row.minutes + " </td><td><a href='javascript:void(0);'  onclick='taskNameSpace.webdb.selectTodo(" + row.ID + ");'>Select</a></td></tr>";
 
 }
 
@@ -155,7 +155,7 @@ taskNameSpace.webdb.getAllTodoItemsForEstimateID = function(renderFunc) {
 };
  function loadTodoItemsForEstimateID(tx, rs) {
  	console.log("fn loadTodoItemsForEstimateID"); 
-	var rowOutput = "<tr><th>Task</th><th>#</th><th>min each</th><th>min total</th><th>subtotal</th><th colspan=2>how many</th><th>action</th></tr>";
+	var rowOutput = "<tr><th>Task</th><th title='Number of times this task will be performed.'>#</th><th>each</th><th>total</th><th>subtotal</th><th colspan=2>times</th><th>action</th></tr>";
 	var todoItems = document.getElementById("todoItemsForCurrentEstimate");
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderTodoForCurrentEstimate(rs.rows.item(i));
@@ -163,19 +163,14 @@ taskNameSpace.webdb.getAllTodoItemsForEstimateID = function(renderFunc) {
 
 	todoItems.innerHTML = rowOutput;
 }
-function renderTodoForCurrentEstimateORIGINAL(row) {
-	console.log("fn renderTodoForCurrentEstimateORIGINAL");
 
-	return "<li>" + row.todo + ":" + row.minutes + " [<a href='javascript:void(0);'  onclick='taskNameSpace.webdb.selectTodo(" + row.ID + ");'>Select</a>]</li>";
-
-}
 ///-------------------------------------------//selectTask
 /////>>>>>>>>>>>>>>>>>>
 function renderTodoForCurrentEstimate(row) {
 	var rpm = sessionStorage.rate_per_min;
 	//alert(rpm);
 	 console.log("fn renderTodoForCurrentEstimate");
-	return "<tr><td>" + row.todo + "</td><td>" + row.repititions + "</td><td>" + row.minutes + "&nbsp;min </td>" +"<td>" + row.minutes*row.repititions + "&nbsp;min</td>"+"<td>$&nbsp;" + row.minutes*row.repititions*rpm + "</td>"
+	return "<tr><td>" + row.todo + "</td><td>" + row.repititions + "</td><td>" + row.minutes + "&nbsp;min </td>" +"<td>" + row.minutes*row.repititions + "&nbsp;min</td>"+"<td>$&nbsp;" + Math.round(row.minutes*row.repititions*rpm) + "</td>"
 	+"<td><a href='javascript:void(0);'  class='plusMinus' onclick='taskNameSpace.webdb.increaseNumberOf(" + row.ID + "," + row.repititions + ");'>+</a></td>"
 	+"<td><a href='javascript:void(0);' class='plusMinus'  onclick='taskNameSpace.webdb.decreaseNumberOf(" + row.ID + "," + row.repititions + ");'>-</a></td>"
 	+"<td> <a href='javascript:void(0);'  onclick='taskNameSpace.webdb.deleteTaskForEstimateID(" + row.ID + ");'>remove</a></td>"
