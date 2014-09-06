@@ -20,8 +20,7 @@ function deleteEstimate(){
 }
 function addEstimate() {
 	console.log('fn addEstimate and delete previous estimate');
-	// HIDE THE SUMMARY
-	
+	// delete previous estimate
 	deleteEstimate();
 	var estimate = document.getElementById("estimate");
 	sessionStorage.estimate_name = estimate.value;
@@ -42,9 +41,6 @@ function addEstimate() {
 estimateNameSpace.webdb.addEstimate = function(estimateText,hrRate,rate_per_minute) {
 	console.log('fn addEstimate');
 	var db = estimateNameSpace.webdb.db;
-	 
-	 
-	 
 	db.transaction(function(tx) {
 		var addedOn = new Date();
 		tx.executeSql("INSERT INTO estimate(estimate, hrRate,rate_per_minute, added_on) VALUES (?,?,?,?)", [estimateText,hrRate,rate_per_minute, addedOn], estimateNameSpace.webdb.onEstimateSuccess, estimateNameSpace.webdb.onEstimateError);
@@ -154,8 +150,8 @@ estimateNameSpace.webdb.onMaterialDeleteSuccess = function(tx, r) {
 
 function initEstimate() {
 	estimateNameSpace.webdb.open();
-	estimateNameSpace.webdb.createEstimateTable();
-	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);
+	estimateNameSpace.webdb.createEstimateTable();//creates a table then no navigation.
+	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);//querys estimates then navigates to loadEstimateItems()
 	
 	//final calculations display
 	var totalCost = document.getElementById('totalCost');
@@ -176,17 +172,19 @@ estimateNameSpace.webdb.getAllEstimateItems = function(renderFunc) {
 };
 
 function loadEstimateItems(tx, rs) {
+	//loops through query results , builds ui in render function and returns ui html to main view.
 	var rowOutput = "<tr><th colspan=3>Existing Estimates</th></tr>";
 	var estimateItems = document.getElementById("estimateItems");
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderEstimate(rs.rows.item(i));
 	}
-
+//the rowOutput contains the "details" and "delete" calls for the estimate.
 	estimateItems.innerHTML = rowOutput;
+	
 }
 
 function renderEstimate(row) {
-	return "<tr><td>" + row.estimate + "</td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.selectEstimate(" + row.ID + ");'>Select</a></td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.deleteEstimate(" + row.ID + ");'>Delete</a></td></tr>";
+	return "<tr><td>" + row.estimate + "</td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.selectEstimate(" + row.ID + ");'>Details</a></td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.deleteEstimate(" + row.ID + ");'>Delete</a></td></tr>";
 }
 
 
@@ -194,9 +192,12 @@ function renderEstimate(row) {
 estimateNameSpace.webdb.selectEstimate = function(id) {
 	console.log('fn selectEstimate');
 	//clear summary
+	var summaryView = document.getElementById('summaryDiv');
+	summaryView.style.display = "none";
+	
 	$( "#taskCost" ).text( "0");
-		$( "#materialCost" ).text("0" );
-		$( "#totalCost" ).text( "0");
+	$( "#materialCost" ).text("0" );
+	$( "#totalCost" ).text( "0");
 	// clear old estimate data here.
 	console.log('clear UI ');
 	sessionStorage.est_id = 0;
@@ -221,8 +222,6 @@ estimateNameSpace.webdb.selectEstimate = function(id) {
 };
 
 estimateNameSpace.webdb.onEstimateSelectSuccess = function(tx, r) {
-	
-//try and set the rate boxes here Math.round
 
 	var rowOutput = "";
 	var estimateItems = document.getElementById("selectedEstimateItem");
@@ -238,35 +237,27 @@ function renderSelectedEstimate(row) {
 	sessionStorage.rate_per_hour=row.hrRate;
 	sessionStorage.rate_per_min=row.rate_per_minute;
 	
-	//set summary display
-	$( "#estimateName" ).text( row.estimate );
-		
-	
+	$( "#estimateName" ).text( row.estimate );//for summary display
 	return "<tr><td style='font-weight:bold;'>" + row.estimate + "</td><td>$"+row.hrRate+"p/hr</td><td>$"+row.rate_per_minute+"p/min</td><td>" + " <input type='hidden' id='selectedEstimate' value='" + row.ID + "'/>  " + "<button onclick='startEstimation(" + row.ID + ");' >open</button></td></tr>";
 }
 
 function startEstimation(id) {
-	//sleep(1000);// let any db changes catch up
-	// L E F T   O F F  H E R E   open
+	 
 	// SET CURRENT ESTIMATE ID
 	sessionStorage.est_id = id;
 	taskNameSpace.webdb.open();
 	
-	taskNameSpace.webdb.createTaskTableForEstimates();// moved from startEstimation()
+	taskNameSpace.webdb.createTaskTableForEstimates();
 	refreshEstimation(id);
-	//MOVE TO REFRESH
-	//INIT ALL AVAILABLE TASKS AND MATERIALS
+	
+	//INIT "AVAILABLE" TASKS AND MATERIALS
 	initTasksForEstimates();
 	initMaterialsForEstimates();
 
-	//INIT CURRENT ESTIMATE TASKS AND MATERIALS
+	//INIT "CURRENT" ESTIMATE's TASKS AND MATERIALS
 	initTasksForEstimateID();
 	initMaterialsForEstimateID();
 	
-	//document.getElementById('ratePerHour').value = sessionStorage.rate_per_hour;
-	//document.getElementById('ratePerMin').value = sessionStorage.rate_per_min;
-	
-
 }
 function refreshEstimation(id){
 	//INIT ALL AVAILABLE TASKS AND MATERIALS
@@ -278,3 +269,13 @@ function refreshEstimation(id){
 	initMaterialsForEstimateID();
 }
 
+function openNewEstimateForm(){
+		var newEstimateForm = document.getElementById('newEstimateForm');
+		newEstimateForm.style.display="block";
+		
+		var summaryDiv = document.getElementById('summaryDiv');
+		summaryDiv.style.display="none";
+		
+		estimateNameSpace.webdb.deleteEstimate(sessionStorage.est_id);
+	}
+	
