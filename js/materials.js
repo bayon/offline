@@ -181,7 +181,7 @@ function renderMaterialForCurrentEstimate(row) {
 /////>>>>>>>>>>>>>>>>>>
 function renderMaterialForCurrentEstimate(row) {
 	 console.log("fn renderMaterialForCurrentEstimate");
-	return "<tr><td>" + row.material + "</td><td>" + row.numberOf + "</td><td>$&nbsp;" + row.cost + " </td><td>$&nbsp;" + Math.round(row.cost*row.numberOf) + " </td>"
+	return "<tr><td>" + row.material + "</td><td>" + row.numberOf + "</td><td>$&nbsp;" + row.cost + " </td><td>$&nbsp;<input class='data_materials' name='data_materials' id='data_materials' value='" + Math.round(row.cost*row.numberOf) + "'/> </td>"
 	+"<td><a href='javascript:void(0);'  class='plusMinus' onclick='materialNameSpace.webdb.increaseNumberOf(" + row.ID + "," + row.numberOf + ");'>+</a></td>"
 	+"<td><a href='javascript:void(0);' class='plusMinus'  onclick='materialNameSpace.webdb.decreaseNumberOf(" + row.ID + "," + row.numberOf + ");'>-</a></td>"
 	+"<td> <a href='javascript:void(0);'  onclick='materialNameSpace.webdb.deleteMaterialForEstimateID(" + row.ID + ");'>remove</a></td>"

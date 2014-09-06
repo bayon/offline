@@ -8,6 +8,7 @@ include_once ('constants.php');
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 		<link rel='stylesheet' type='text/css' href='css/style.css'>
      <script type='text/javascript' src='js/tasks.js'></script>
+     <script type='text/javascript' src='js/latest_jquery.js'></script>
      
   </head>
   <body onload="initTasks();">

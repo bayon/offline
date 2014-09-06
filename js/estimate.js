@@ -89,6 +89,15 @@ function initEstimate() {
 	estimateNameSpace.webdb.open();
 	estimateNameSpace.webdb.createEstimateTable();
 	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);
+	
+	//final calculations display
+	var totalCost = document.getElementById('totalCost');
+		if(sessionStorage.totalCost > 0){
+			totalCost.value=sessionStorage.totalCost;
+		}else{
+			totalCost.value=0;
+		}
+		
 
 }
 

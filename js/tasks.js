@@ -170,7 +170,7 @@ function renderTodoForCurrentEstimate(row) {
 	var rpm = sessionStorage.rate_per_min;
 	//alert(rpm);
 	 console.log("fn renderTodoForCurrentEstimate");
-	return "<tr><td>" + row.todo + "</td><td>" + row.repititions + "</td><td>" + row.minutes + "&nbsp;min </td>" +"<td>" + row.minutes*row.repititions + "&nbsp;min</td>"+"<td>$&nbsp;" + Math.round(row.minutes*row.repititions*rpm) + "</td>"
+	return "<tr><td>" + row.todo + "</td><td>" + row.repititions + "</td><td>" + row.minutes + "&nbsp;min </td>" +"<td>" + row.minutes*row.repititions + "&nbsp;min</td>"+"<td>$&nbsp;<input type='text' class='data_tasks' name='data_tasks' id ='data_tasks' value='" + Math.round(row.minutes*row.repititions*rpm) + "'/></td>"
 	+"<td><a href='javascript:void(0);'  class='plusMinus' onclick='taskNameSpace.webdb.increaseNumberOf(" + row.ID + "," + row.repititions + ");'>+</a></td>"
 	+"<td><a href='javascript:void(0);' class='plusMinus'  onclick='taskNameSpace.webdb.decreaseNumberOf(" + row.ID + "," + row.repititions + ");'>-</a></td>"
 	+"<td> <a href='javascript:void(0);'  onclick='taskNameSpace.webdb.deleteTaskForEstimateID(" + row.ID + ");'>remove</a></td>"
