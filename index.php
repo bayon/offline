@@ -1,5 +1,6 @@
 <?php include_once('constants.php'); ?>
-<html>
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
+<html manifest='cache.appcache'>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
