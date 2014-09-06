@@ -4,7 +4,7 @@ include_once ('constants.php');
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+		<script type='text/javascript' src='js/rwd.js'></script>
 		<link rel='stylesheet' type='text/css' href='css/style.css'>
 	</head>
 	<body >

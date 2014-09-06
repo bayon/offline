@@ -1,15 +1,15 @@
 <?php
 include_once ('constants.php');
-if(isset($_GET)){
-	print_r($_GET);
-}
+
  ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+				<script type='text/javascript' src='js/rwd.js'></script>
+
 		<link rel='stylesheet' type='text/css' href='css/style.css'>
+		
 		<script type='text/javascript' src='m/EstimateModel.js'></script>
 		<script type='text/javascript' src='m/TaskModel.js'></script>
 		<script type='text/javascript' src='m/MaterialModel.js'></script>
@@ -24,8 +24,12 @@ if(isset($_GET)){
  ?>
 		<div class="content">
 
-<h2>Estimate</h2>
-
+<h3>Estimate</h3>
+			<div id='estimateControlHeader'>
+				
+			<button id='newEstimateFormButton' onclick='openNewEstimateForm();' >+</button>
+			<!-- NEW ESTIMATE FORM -->
+			<div id='newEstimateForm' style='display:none;'>
 			<table border=1 class="estimatorTable">
 				<form type="post" onsubmit="addEstimate(); return false;">
 					<tr>
@@ -33,57 +37,59 @@ if(isset($_GET)){
 					</tr>
 					<tr>
 						<td>$&nbsp;
-						<input type="text" id="hrRate" name="hrRate"  style="width: 20px;" />
+						<input type="number" id="hrRate" name="hrRate"  style="width:50%;" />
 						</td>
 						<td>
-						<input type="text" id="estimate" name="estimate"    />
+						<input type="text" id="estimate" name="estimate"  style="width:80%;"  />
 						</td>
 						<td>
-						<input type="submit" value="+"/>
+						<input class="addButton" type="submit" value="+"  style="width:100%;"/>
 						</td>
 					</tr>
 				</form>
 			</table>
+			</div>
+			<!-- EXISTING ESTIMATES -->
 			<table id="estimateItems" border=1 class="estimatorTable"></table>
+			
+			<!-- ESTIMATE SUMMARY -->
+					<h3>Summary:</h3>
+					<table class='summaryTable' border=1 width=100%>
+					<tr>	<td id='estimateName' style='font-weight:bold;background-color:lightblue;'></td>
+					<td>tasks:</td>		<td id='taskCost' style='font-weight:bold;'></td>
+					<td>materials:</td>	<td id='materialCost' style='font-weight:bold;'></td>
+					<td>hours:</td>		<td id='est_time' style='font-weight:bold;'></td>
+					<td>total $:</td>		<td id='totalCost' style='font-weight:bold;color:green;'></td></tr>
+					</table>
+			
+</div>
+
+
+					
 
 			<div id="estimate_details" >
 
 				<table id="selectedEstimateItem" width=100%;></table>
-				<table>
-					<tr><td>tasks:</td><td id='taskCost'></td></tr>
-					<tr><td>materials:</td><td id='materialCost'></td></tr>
-					<tr><td>total:</td><td id='totalCost'></td></tr>
-				</table>
+				
 
 
-				<table>
-					<tr>
-						<td>rate per hour</td><td>
-						<input id='ratePerHour' type='text' value='' style='width:30px;'/>
-						</td>
-					</tr>
-					<tr>
-						<td>rate per minute</td><td>
-						<input id='ratePerMin' type='text' value='' style='width:30px;'/>
-						</td>
-					</tr>
-				</table>
+				 
 
 
 <form id="myFormId" action="#">
 <input type='hidden'  name='hidden_name' />
 				<div  class='form_row'  style='float:left; width:100%;'>
-					<h3> Current Tasks: </h3>
+					
 					<table id="todoItemsForCurrentEstimate" border=1 class="estimatorTable"></table>
-					<h3> Current Materials: </h3>
+					
 					<table id="materialItemsForCurrentEstimate"  border=1 class="estimatorTable"></table>
 				</div>
-<button id='finalize'   >finalize</button>
+<button id='finalize' style='margin-top:20px;font-weight:bold;'  >finalize</button>
 </form>
 <div id="results"></div>
 
 
-				<div  class='form_row'style='float:left; width:100%;'>
+				<div id='availableSelections' class='form_row'style='float:left; width:100%;'>
 					<h3> Available Tasks: </h3>
 					<table id="todoItemsForEstimates" border=1 class="estimatorTable"></table>
 					<h3> Available Materials: </h3>
@@ -100,37 +106,54 @@ if(isset($_GET)){
 <script>
 	$(document).ready(function() {
 		console.log("ready!");
-		//alert('jq and js');
+		//alert('jq and js'); start
+		
+		 
+		//populate the SUMMARY  with values
+		$( "#estimateName" ).text( sessionStorage.estimate_name );
+		$( "#taskCost" ).text( sessionStorage.totalTask );
+		$( "#materialCost" ).text( sessionStorage.totalMaterial );
+		
+		var est_hours = Math.round((sessionStorage.totalMinutes/60)*100)/100;
+		//alert(est_hours);
+		$( "#est_time" ).text( est_hours );
+		$( "#totalCost" ).text( sessionStorage.totalCost );
+		 
+		 
+		 
+		 
+	});
+		
+	 
 		
 		
-		
-
-	}); 
+		 
 	$("#finalize").click(function(){
-	// when the button is clicked
-	var totalTask=0;
+		
+		var totalMinutes=0;
+		$.each($(".data_minutes"),function(i,e){
+			totalMinutes = totalMinutes + parseFloat(e.value);
+		});
+		sessionStorage.totalMinutes = totalMinutes;
+	
+		var totalTask=0;
 		$.each($(".data_tasks"),function(i,e){
-		// loop through all the items
-			// and alert the value
-			//alert(e.value);
 			totalTask = totalTask + parseFloat(e.value);
 		});
-		alert(totalTask);
 		sessionStorage.totalTask = totalTask;
+		
 		var totalMaterial=0;
 		$.each($(".data_materials"),function(i,e){
-		// loop through all the items
-			// and alert the value
-			//alert(e.value);
 			totalMaterial = totalMaterial + parseFloat(e.value);
 		});
-		alert(totalMaterial);
 		sessionStorage.totalMaterial = totalMaterial;
+		
 		var totalTasksAndMaterials = totalTask + totalMaterial;
-		alert("grand total: "+totalTasksAndMaterials);
-		//NOT HEREvar totalCost = document.getElementById('taskCost');
-		//totalCost.value="$"+totalTasksAndMaterials;
 		sessionStorage.totalCost = totalTasksAndMaterials;
+		
 	});
-	
+	function openNewEstimateForm(){
+		var newEstimateForm = document.getElementById('newEstimateForm');
+		newEstimateForm.style.display="block";
+	}
 </script>

@@ -105,7 +105,7 @@ function loadMaterialItemsForEstimates(tx, rs) {
 }
 function renderMaterialForEstimates(row) {
 	console.log('fn renderMaterialForEstimates');
-	return "<tr><td>" + row.material + "</td><td>" + row.cost + "</td><td><a href='javascript:void(0);'  onclick='materialNameSpace.webdb.selectMaterial(" + row.ID + ");'>Select</a></td></tr>";
+	return "<tr><td>" + row.material + "</td><td>$&nbsp;" + row.cost + "</td><td><a href='javascript:void(0);'  onclick='materialNameSpace.webdb.selectMaterial(" + row.ID + ");'>Select</a></td></tr>";
 }
 materialNameSpace.webdb.selectMaterial = function(id) {
 	console.log('fn selectMaterial');
@@ -161,7 +161,7 @@ materialNameSpace.webdb.getAllMaterialItemsForEstimateID = function(renderFunc) 
 };
  function loadMaterialItemsForEstimateID(tx, rs) {
  	console.log("fn loadMaterialItemsForEstimateID"); 
-	var rowOutput = "<tr><th>Material</th><th title='Number of these items needed.'>#</th><th>each</th><th title='Cost each times how many needed.'>subtotal</th><th colspan=2>how many</th><th>action</th></tr>";
+	var rowOutput = "<tr><th>Current Materials</th><th title='Number of these items needed.'>#</th><th>each</th><th title='Cost each times how many needed.'>subtotal</th><th colspan=3>action</th></tr>";
 	var materialItems = document.getElementById("materialItemsForCurrentEstimate");
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderMaterialForCurrentEstimate(rs.rows.item(i));
@@ -181,10 +181,10 @@ function renderMaterialForCurrentEstimate(row) {
 /////>>>>>>>>>>>>>>>>>>
 function renderMaterialForCurrentEstimate(row) {
 	 console.log("fn renderMaterialForCurrentEstimate");
-	return "<tr><td>" + row.material + "</td><td>" + row.numberOf + "</td><td>$&nbsp;" + row.cost + " </td><td>$&nbsp;<input class='data_materials' name='data_materials' id='data_materials' value='" + Math.round(row.cost*row.numberOf) + "'/> </td>"
+	return "<tr><td>" + row.material + "</td><td>" + row.numberOf + "</td><td>$&nbsp;" + row.cost + " </td><td>$&nbsp;<input class='data_materials' name='data_materials' id='data_materials' value='" + Math.round(row.cost*row.numberOf*100)/100 + "'/> </td>"
 	+"<td><a href='javascript:void(0);'  class='plusMinus' onclick='materialNameSpace.webdb.increaseNumberOf(" + row.ID + "," + row.numberOf + ");'>+</a></td>"
 	+"<td><a href='javascript:void(0);' class='plusMinus'  onclick='materialNameSpace.webdb.decreaseNumberOf(" + row.ID + "," + row.numberOf + ");'>-</a></td>"
-	+"<td> <a href='javascript:void(0);'  onclick='materialNameSpace.webdb.deleteMaterialForEstimateID(" + row.ID + ");'>remove</a></td>"
+	+"<td> <a href='javascript:void(0);'  onclick='materialNameSpace.webdb.deleteMaterialForEstimateID(" + row.ID + ");' style='color:red;' >x</a></td>"
 	+"</tr>";
 }
 materialNameSpace.webdb.increaseNumberOf = function(id, numberOf) {
@@ -207,11 +207,13 @@ materialNameSpace.webdb.changeNumberOfSuccess = function(tx, r) {
 	console.log("fn changeNumberOfSuccess");
 	materialNameSpace.webdb.getAllMaterialItemsForEstimateID(loadMaterialItemsForEstimateID);
 };
+////////  WARNING : NO tx PARAM !!!!!
 materialNameSpace.webdb.deleteMaterialForEstimateID = function(id) {
 	console.log("fn deleteMaterialForEstimateID");
+	alert("meterial ID:"+id);
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("DELETE FROM materialForEstimates WHERE ID=?", [id], materialNameSpace.webdb.onMaterialDeleteSuccess, materialNameSpace.webdb.onMaterialError);
+		tx.executeSql("DELETE FROM materialForEstimates WHERE est_id=?", [id], materialNameSpace.webdb.onMaterialDeleteSuccess, materialNameSpace.webdb.onMaterialError);
 	});
 };
 materialNameSpace.webdb.onMaterialDeleteSuccess = function(tx, r) {

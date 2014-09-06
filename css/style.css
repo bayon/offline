@@ -2,6 +2,7 @@ body {
 	color: #333;
 	font: 14px Arial;
 	margin: 0;
+	background-color:#eee;
 }
 body a {
 	color: #3D5C9D;
@@ -32,16 +33,55 @@ h2,h3{
 	padding:2px;
 	margin:2px;
 }
+
+
+.addButton{
+	width:100%;
+	height:30px;
+	font-size:20px;
+	
+}
+.plusMinus{
+	font-size:20px;
+	font-family:"Arial Black";
+	font-weight:bold;
+	text-align:center;
+}
 .estimatorTable{
 	width:100%;
 	margin-top:20px;
 	border-collapse:collapse;
 	border:solid 1px #777;
-	
+	font-size:13px;
+	text-align:center;
+	background-color:white;
 }
 .estimatorTable td{
 	min-width:25px;
 	padding:2px;
+	height:30px;
+}
+.estimatorTable th{
+	
+	background-color:lightgreen;
+}
+.estimatorTable a{
+	margin:0;
+}
+.estimatorTable a:link    {
+    color: blue;
+}
+
+.estimatorTable a:visited {
+    color: orange;
+}
+
+.estimatorTable a:hover   {
+    color: orange;
+}
+
+.estimatorTable a:active  {
+    color: black;
 }
 #estimate_details{
 	margin-top:20px;
@@ -49,4 +89,55 @@ h2,h3{
 	float:left;
 	display:none;
 	width:100%;
+}
+#selectedEstimateItem{
+	background-color:lightblue;
+	border:solid 1px #444;
+	color:#444;
+}
+.data_minutes{
+	/*input for $*/
+	width:40px;
+	max-width:40px;
+}
+.data_tasks{
+	/*input for $*/
+	width:40px;
+	max-width:40px;
+}
+.data_materials{
+	width:40px;
+	max-width:40px;
+}
+.summaryTable{
+	width:100%;
+	margin-top:20px;
+	border-collapse:collapse;
+	border:solid 1px #777;
+	font-size:13px;
+	text-align:center;
+	background-color:white;
+}
+table{
+	background-color:white;
+}
+/*------------------DESKTOP----------------*/
+
+ @media screen and (max-width:5000px) {
+
+}
+
+/*------------------TABLET----------------*/
+ @media screen and (max-width:1024px) {
+
+}
+
+/*------------------iPhone----------------*/
+ @media screen and (max-width:480px) {
+ 	.estimatorTable td{
+	min-width:0px;
+	padding:0px;
+	height:30px;
+}
+
 }

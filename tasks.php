@@ -5,7 +5,7 @@ include_once ('constants.php');
 <html>
   <head>
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+		<script type='text/javascript' src='js/rwd.js'></script>
 		<link rel='stylesheet' type='text/css' href='css/style.css'>
      <script type='text/javascript' src='js/tasks.js'></script>
      <script type='text/javascript' src='js/latest_jquery.js'></script>
@@ -20,8 +20,8 @@ include_once ('constants.php');
     <table border=1 class="estimatorTable">
     <form type="post" onsubmit="addTodo(); return false;">
       <tr><td>task</td><td><input type="text" id="todo" name="todo"    /></td> </tr>
-      <tr><td>min</td><td><input type="text" id="minutes" name="minutes"    /></td> </tr>
-       <tr><td><input type="submit" value="+"/></td><td>&nbsp;</td> </tr>
+      <tr><td>min</td><td><input type="number" id="minutes" name="minutes"    />&nbsp;min</td> </tr>
+       <tr><td>&nbsp;</td><td><input class="addButton" type="submit" value="+"/></td> </tr>
     </form>
     </table>
      <table id="todoItems" border=1 class="estimatorTable">
