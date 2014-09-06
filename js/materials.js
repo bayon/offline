@@ -102,6 +102,7 @@ function loadMaterialItemsForEstimates(tx, rs) {
 	}
 
 	materialItems.innerHTML = rowOutput;
+	
 }
 function renderMaterialForEstimates(row) {
 	console.log('fn renderMaterialForEstimates');
@@ -210,7 +211,7 @@ materialNameSpace.webdb.changeNumberOfSuccess = function(tx, r) {
 ////////  WARNING : NO tx PARAM !!!!!
 materialNameSpace.webdb.deleteMaterialForEstimateID = function(id) {
 	console.log("fn deleteMaterialForEstimateID");
-	alert("meterial ID:"+id);
+	//alert("material ID:"+id);
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("DELETE FROM materialForEstimates WHERE est_id=?", [id], materialNameSpace.webdb.onMaterialDeleteSuccess, materialNameSpace.webdb.onMaterialError);

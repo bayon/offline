@@ -20,7 +20,7 @@ include_once ('constants.php');
     <table border=1 class="estimatorTable">
     <form type="post" onsubmit="addTodo(); return false;">
       <tr><td>task</td><td><input type="text" id="todo" name="todo"    /></td> </tr>
-      <tr><td>min</td><td><input type="number" id="minutes" name="minutes"    />&nbsp;min</td> </tr>
+      <tr><td>min</td><td><input type="number"  step="any" id="minutes" name="minutes"    />&nbsp;min</td> </tr>
        <tr><td>&nbsp;</td><td><input class="addButton" type="submit" value="+"/></td> </tr>
     </form>
     </table>

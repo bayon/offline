@@ -15,7 +15,7 @@
      <ul>
      	
      	
-     	<li>upon selecting a task or material for an estimate, others get deleted.</li>
+     	<li>!!! THIS !!! upon selecting a task or material for an estimate, others get deleted.</li>
      	<li>calculate final estimate and customer display</li>
      	<li>apply appcache </li>
      	<li>RWD and more user-friendly</li>

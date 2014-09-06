@@ -22,7 +22,7 @@ include_once ('constants.php');
     <form type="post" onsubmit="addMaterial(); return false;">
     	
        <tr><td>material:</td><td><input type="text" id="material" name="material"    /></td></tr>
-       <tr><td>cost:</td><td>$&nbsp;<input type="number" id="material_cost" name="material_cost"    /> </td></tr>
+       <tr><td>cost:</td><td>$&nbsp;<input type="number"  step="any" id="material_cost" name="material_cost"    /> </td></tr>
        <tr><td>&nbsp;</td><td><input class="addButton" type="submit" value="+"/></td></tr>
       
     </form>

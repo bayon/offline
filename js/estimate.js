@@ -14,8 +14,15 @@ estimateNameSpace.webdb.createEstimateTable = function() {
 		tx.executeSql("CREATE TABLE IF NOT EXISTS estimate(ID INTEGER PRIMARY KEY ASC, estimate TEXT  UNIQUE ON CONFLICT REPLACE,hrRate FLOAT,rate_per_minute FLOAT, added_on DATETIME)", []);
 	});
 };
+function deleteEstimate(){
+	console.log('fn deleteEstimate');
+	estimateNameSpace.webdb.deleteEstimate(sessionStorage.est_id);
+}
 function addEstimate() {
-	console.log('fn addEstimate');
+	console.log('fn addEstimate and delete previous estimate');
+	// HIDE THE SUMMARY
+	
+	deleteEstimate();
 	var estimate = document.getElementById("estimate");
 	sessionStorage.estimate_name = estimate.value;
 	var hrRate = document.getElementById("hrRate");
@@ -55,7 +62,15 @@ estimateNameSpace.webdb.onEstimateSuccess = function(tx, r) {
 
 estimateNameSpace.webdb.deleteEstimate = function(id) {
 	console.log('delete estimate REALLY');
-	alert("ID:"+id);
+	//alert("ID:"+id);
+	
+	// TRY CALLING ORPHANS FROM HERE::::::::CLEARING ORPHANS IS NOT WORKING CORRECTLY    !!!!!!  ???????
+	//try moving these orphan functions to the estimate NAMESPACE
+	
+	estimateNameSpace.webdb.deleteMaterialForEstimateID(sessionStorage.est_id);
+	estimateNameSpace.webdb.deleteTaskForEstimateID(sessionStorage.est_id);
+	
+	
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("DELETE FROM estimate WHERE ID = ?", [id], estimateNameSpace.webdb.onEstimateDeleteSuccess, estimateNameSpace.webdb.onEstimateError);
@@ -72,10 +87,11 @@ estimateNameSpace.webdb.onEstimateDeleteSuccess = function(tx, r) {
 	//materialItemsForCurrentEstimate.value="";
 	//materialItemsForCurrentEstimate
 	console.log('clear orphans ');
+	//alert('clear orphans ');
 	//
 	//
 	//
-	
+	//alert("DO WE HAVE EST ID:"+ sessionStorage.est_id);
 	// CLEARING ORPHANS IS NOT WORKING CORRECTLY    !!!!!!  ???????
 	//materialNameSpace.webdb.deleteMaterialForEstimateID(sessionStorage.est_id);
 	//taskNameSpace.webdb.deleteTaskForEstimateID(sessionStorage.est_id);
@@ -93,10 +109,48 @@ estimateNameSpace.webdb.onEstimateDeleteSuccess = function(tx, r) {
 	sessionStorage.estimate_name="";
 	initMaterialsForEstimateID();
 	initTasksForEstimateID();
-	//sessionStorage.est_id = 0;
+	//sessionStorage.est_id = 0; alert
 	// FAILED TO REMOVE ORPHANS HERE  re-render the data.
 	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);
 };
+
+//-------------------------
+estimateNameSpace.webdb.deleteTaskForEstimateID = function(id) {
+	console.log("fn EST deleteTaskForEstimateID");
+	var db = estimateNameSpace.webdb.db;
+	db.transaction(function(tx) {
+		tx.executeSql("DELETE FROM todoForEstimate WHERE ID=?", [id], estimateNameSpace.webdb.onTaskDeleteSuccess, estimateNameSpace.webdb.onTaskError);
+	});
+};
+estimateNameSpace.webdb.onTaskDeleteSuccess = function(tx, r) {
+	console.log("fn EST onTaskDeleteSuccess");
+	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
+	//startEstimation(sessionStorage.est_id); finalize
+};
+
+estimateNameSpace.webdb.deleteMaterialForEstimateID = function(id) {
+	console.log("fn EST deleteMaterialForEstimateID");
+	//alert("meterial ID:"+id);
+	var db = estimateNameSpace.webdb.db;
+	db.transaction(function(tx) {
+		tx.executeSql("DELETE FROM materialForEstimates WHERE est_id=?", [id], estimateNameSpace.webdb.onMaterialDeleteSuccess, estimateNameSpace.webdb.onMaterialError);
+	});
+};
+estimateNameSpace.webdb.onMaterialDeleteSuccess = function(tx, r) {
+	console.log("fn EST onMaterialDeleteSuccess");
+	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
+	//startEstimation(sessionStorage.est_id);
+};
+//-----------------------
+
+
+
+
+
+
+
+
+
 
 function initEstimate() {
 	estimateNameSpace.webdb.open();
@@ -193,12 +247,14 @@ function renderSelectedEstimate(row) {
 
 function startEstimation(id) {
 	//sleep(1000);// let any db changes catch up
-	// L E F T   O F F  H E R E  
+	// L E F T   O F F  H E R E   open
 	// SET CURRENT ESTIMATE ID
 	sessionStorage.est_id = id;
 	taskNameSpace.webdb.open();
-	taskNameSpace.webdb.createTaskTableForEstimates();
 	
+	taskNameSpace.webdb.createTaskTableForEstimates();// moved from startEstimation()
+	refreshEstimation(id);
+	//MOVE TO REFRESH
 	//INIT ALL AVAILABLE TASKS AND MATERIALS
 	initTasksForEstimates();
 	initMaterialsForEstimates();
@@ -209,6 +265,16 @@ function startEstimation(id) {
 	
 	//document.getElementById('ratePerHour').value = sessionStorage.rate_per_hour;
 	//document.getElementById('ratePerMin').value = sessionStorage.rate_per_min;
+	
 
+}
+function refreshEstimation(id){
+	//INIT ALL AVAILABLE TASKS AND MATERIALS
+	initTasksForEstimates();
+	initMaterialsForEstimates();
+
+	//INIT CURRENT ESTIMATE TASKS AND MATERIALS
+	initTasksForEstimateID();
+	initMaterialsForEstimateID();
 }
 

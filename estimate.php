@@ -28,8 +28,9 @@ include_once ('constants.php');
 			<div id='estimateControlHeader'>
 				
 			<button id='newEstimateFormButton' onclick='openNewEstimateForm();' >+</button>
-			<!-- NEW ESTIMATE FORM -->
+			<!-- NEW ESTIMATE FORM C L E A R -->
 			<div id='newEstimateForm' style='display:none;'>
+				<p>delete old estimate: only one at a time.</p>
 			<table border=1 class="estimatorTable">
 				<form type="post" onsubmit="addEstimate(); return false;">
 					<tr>
@@ -37,7 +38,7 @@ include_once ('constants.php');
 					</tr>
 					<tr>
 						<td>$&nbsp;
-						<input type="number" id="hrRate" name="hrRate"  style="width:50%;" />
+						<input type="number"  step="any"  id="hrRate" name="hrRate"  style="width:50%;" />
 						</td>
 						<td>
 						<input type="text" id="estimate" name="estimate"  style="width:80%;"  />
@@ -52,7 +53,11 @@ include_once ('constants.php');
 			<!-- EXISTING ESTIMATES -->
 			<table id="estimateItems" border=1 class="estimatorTable"></table>
 			
-			<!-- ESTIMATE SUMMARY -->
+			
+		</div>
+
+<!-- ESTIMATE SUMMARY -->
+					<div id='summaryDiv'>
 					<h3>Summary:</h3>
 					<table class='summaryTable' border=1 width=100%>
 					<tr>	<td id='estimateName' style='font-weight:bold;background-color:lightblue;'></td>
@@ -61,10 +66,7 @@ include_once ('constants.php');
 					<td>hours:</td>		<td id='est_time' style='font-weight:bold;'></td>
 					<td>total $:</td>		<td id='totalCost' style='font-weight:bold;color:green;'></td></tr>
 					</table>
-			
-</div>
-
-
+			</div>
 					
 
 			<div id="estimate_details" >
@@ -109,7 +111,7 @@ include_once ('constants.php');
 		//alert('jq and js'); start
 		
 		 
-		//populate the SUMMARY  with values
+		//populate the SUMMARY  with values clear orphans
 		$( "#estimateName" ).text( sessionStorage.estimate_name );
 		$( "#taskCost" ).text( sessionStorage.totalTask );
 		$( "#materialCost" ).text( sessionStorage.totalMaterial );
@@ -155,5 +157,8 @@ include_once ('constants.php');
 	function openNewEstimateForm(){
 		var newEstimateForm = document.getElementById('newEstimateForm');
 		newEstimateForm.style.display="block";
+		
+		var summaryDiv = document.getElementById('summaryDiv');
+		summaryDiv.style.display="none";
 	}
 </script>
