@@ -174,7 +174,7 @@ function renderTodoForCurrentEstimate(row) {
 	return "<tr><td>" + row.todo + "</td><td>" + row.repititions + "</td> <td>" + row.minutes + "&nbsp;min</td>"+    " <td><input type='text' id='data_minutes' class='data_minutes' name='data_minutes' value='" + row.minutes*row.repititions + "' />&nbsp;min </td>" +     "<td>$&nbsp;<input type='text' class='data_tasks' name='data_tasks' id ='data_tasks' value='" + Math.round(row.minutes*row.repititions*rpm*100)/100 + "'/></td>"
 	+"<td><a href='javascript:void(0);'  class='plusMinus' onclick='taskNameSpace.webdb.increaseNumberOf(" + row.ID + "," + row.repititions + ");'>+</a></td>"
 	+"<td><a href='javascript:void(0);' class='plusMinus'  onclick='taskNameSpace.webdb.decreaseNumberOf(" + row.ID + "," + row.repititions + ");'>-</a></td>"
-	+"<td> <a href='javascript:void(0);'  onclick='taskNameSpace.webdb.deleteTaskForEstimateID(" + row.ID + ");' style='color:red;'>x</a></td>"
+	+"<td> <a href='javascript:void(0);'  onclick='taskNameSpace.webdb.deleteAllTasksForEstimate(" + row.ID + ");' style='color:red;'>x</a></td>"
 	+"</tr>";
 }
 taskNameSpace.webdb.increaseNumberOf = function(id, numberOf) {
@@ -197,8 +197,8 @@ taskNameSpace.webdb.changeNumberOfSuccess = function(tx, r) {
 	console.log("fn changeNumberOfSuccess");
 	taskNameSpace.webdb.getAllTodoItemsForEstimateID(loadTodoItemsForEstimateID);
 };
-taskNameSpace.webdb.deleteTaskForEstimateID = function(id) {
-	console.log("fn deleteTaskForEstimateID");
+taskNameSpace.webdb.deleteAllTasksForEstimate = function(id) {
+	console.log("fn deleteAllTasksForEstimate");
 	var db = taskNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("DELETE FROM todoForEstimate WHERE ID=?", [id], taskNameSpace.webdb.onTaskDeleteSuccess, taskNameSpace.webdb.onTaskError);

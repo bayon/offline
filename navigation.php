@@ -1,8 +1,12 @@
 <div class='navigation_container'>
-	<a href="index.php" >home</a>
+	<div id='app_name' style='float:left;margin-left:30px;margin-top:2px;'><a href="index.php" style='color:#000;'><?=APP_NAME; ?></a></div>
+	<a href="estimate.php" >estimate</a>
 	<a href="tasks.php" >tasks</a>
 	<a href="materials.php" >materials</a>
-	<a href="estimate.php" >estimate</a>
-	<a href="reference.php" >reference</a>
 </div>
-<h1 style='margin-left:30px;'><?=APP_NAME; ?></h1>
+
+
+<!--
+	<a href="reference.php" >reference</a>
+
+-->

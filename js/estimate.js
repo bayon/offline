@@ -63,8 +63,8 @@ estimateNameSpace.webdb.deleteEstimate = function(id) {
 	// TRY CALLING ORPHANS FROM HERE::::::::CLEARING ORPHANS IS NOT WORKING CORRECTLY    !!!!!!  ???????
 	//try moving these orphan functions to the estimate NAMESPACE
 	
-	estimateNameSpace.webdb.deleteMaterialForEstimateID(sessionStorage.est_id);
-	estimateNameSpace.webdb.deleteTaskForEstimateID(sessionStorage.est_id);
+	//estimateNameSpace.webdb.deleteAllMaterialsForEstimate(sessionStorage.est_id);
+	//estimateNameSpace.webdb.deleteAllTasksForEstimate(sessionStorage.est_id);
 	
 	
 	var db = estimateNameSpace.webdb.db;
@@ -89,8 +89,8 @@ estimateNameSpace.webdb.onEstimateDeleteSuccess = function(tx, r) {
 	//
 	//alert("DO WE HAVE EST ID:"+ sessionStorage.est_id);
 	// CLEARING ORPHANS IS NOT WORKING CORRECTLY    !!!!!!  ???????
-	//materialNameSpace.webdb.deleteMaterialForEstimateID(sessionStorage.est_id);
-	//taskNameSpace.webdb.deleteTaskForEstimateID(sessionStorage.est_id);
+	//materialNameSpace.webdb.deleteAllMaterialsForEstimate(sessionStorage.est_id);
+	//taskNameSpace.webdb.deleteAllTasksForEstimate(sessionStorage.est_id);
 	
 	//
 	//
@@ -111,11 +111,14 @@ estimateNameSpace.webdb.onEstimateDeleteSuccess = function(tx, r) {
 };
 
 //-------------------------
-estimateNameSpace.webdb.deleteTaskForEstimateID = function(id) {
-	console.log("fn EST deleteTaskForEstimateID");
+estimateNameSpace.webdb.deleteAllTasksForEstimate = function(id) {
+	console.log("fn EST deleteAllTasksForEstimate");
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("DELETE FROM todoForEstimate WHERE ID=?", [id], estimateNameSpace.webdb.onTaskDeleteSuccess, estimateNameSpace.webdb.onTaskError);
+		//tx.executeSql("DELETE FROM todoForEstimate WHERE ID=?", [id], estimateNameSpace.webdb.onTaskDeleteSuccess, estimateNameSpace.webdb.onTaskError);
+		//delete ALL 
+			tx.executeSql("DELETE FROM todoForEstimate", [], estimateNameSpace.webdb.onTaskDeleteSuccess, estimateNameSpace.webdb.onTaskError);
+
 	});
 };
 estimateNameSpace.webdb.onTaskDeleteSuccess = function(tx, r) {
@@ -124,12 +127,12 @@ estimateNameSpace.webdb.onTaskDeleteSuccess = function(tx, r) {
 	//startEstimation(sessionStorage.est_id); finalize
 };
 
-estimateNameSpace.webdb.deleteMaterialForEstimateID = function(id) {
-	console.log("fn EST deleteMaterialForEstimateID");
+estimateNameSpace.webdb.deleteAllMaterialsForEstimate = function(id) {
+	console.log("fn EST deleteAllMaterialsForEstimate");
 	//alert("meterial ID:"+id);
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
-		tx.executeSql("DELETE FROM materialForEstimates WHERE est_id=?", [id], estimateNameSpace.webdb.onMaterialDeleteSuccess, estimateNameSpace.webdb.onMaterialError);
+		tx.executeSql("DELETE FROM materialForEstimates", [], estimateNameSpace.webdb.onMaterialDeleteSuccess, estimateNameSpace.webdb.onMaterialError);
 	});
 };
 estimateNameSpace.webdb.onMaterialDeleteSuccess = function(tx, r) {
@@ -149,9 +152,14 @@ estimateNameSpace.webdb.onMaterialDeleteSuccess = function(tx, r) {
 
 
 function initEstimate() {
+	console.log(' initEstimate');
 	estimateNameSpace.webdb.open();
 	estimateNameSpace.webdb.createEstimateTable();//creates a table then no navigation.
 	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);//querys estimates then navigates to loadEstimateItems()
+	
+	estimateNameSpace.webdb.deleteEstimate(sessionStorage.est_id);
+	estimateNameSpace.webdb.deleteAllMaterialsForEstimate(sessionStorage.est_id);
+	estimateNameSpace.webdb.deleteAllTasksForEstimate(sessionStorage.est_id);
 	
 	//final calculations display
 	var totalCost = document.getElementById('totalCost');
@@ -173,7 +181,7 @@ estimateNameSpace.webdb.getAllEstimateItems = function(renderFunc) {
 
 function loadEstimateItems(tx, rs) {
 	//loops through query results , builds ui in render function and returns ui html to main view.
-	var rowOutput = "<tr><th colspan=3>Existing Estimates</th></tr>";
+	var rowOutput = "<tr><th colspan=3>Estimate</th></tr>";
 	var estimateItems = document.getElementById("estimateItems");
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderEstimate(rs.rows.item(i));

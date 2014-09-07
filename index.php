@@ -2,6 +2,7 @@
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
 <html manifest='cache.appcache'>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 		<link rel='stylesheet' type='text/css' href='css/style.css'>
@@ -9,42 +10,30 @@
 	<body >
 		<?php include_once('navigation.php'); ?>
 		<div class="content">
-		<h3>Home</h3>
+		<h3>A quick estimate calculator for people who do things with stuff.</h3>
 		
-	<p> Software tasks for estimate creation.</p>
+	<p> How it works.</p>
      <ul>
      	
      	
-     	<li>!!! THIS !!! upon selecting a task or material for an estimate, others get deleted.</li>
-     	<li>calculate final estimate and customer display</li>
-     	<li>apply appcache </li>
-     	<li>RWD and more user-friendly</li>
+     	<li>Make a general list of tasks and how long they take in minutes.</li>
+     	<li>Make a list of materials and how much they cost each.</li>
+     	<li>Enter your hourly rate.</li>
+     	<li>Add tasks and materials from your lists to your estimate.</li>
+     	<li>Adjust how many times each task gets performed.</li>
+     	<li>Adjust how many pieces of each material you'll need.</li>
+     	<li>Click finalize and see the results.</li>
+     		<ul>
+     			<li>Cost of Tasks.</li>
+     			<li>Cost of Materials.</li>
+     			<li>The time it will take.</li>
+     			<li>The total cost.</li>
+     		</ul>
+     	<li>And...it works even if you don't have an internet connection!</li>
      	
   		
   	</ul>
-  	<p> Done</p>
-  	<ul>
-  		<li>upon estimate deletion, remove orphans tasks and materials.both UI and DB</li>
-     	<li>FOREIGN KEY (sketchID) REFERENCES Sketch (sketchId), </li>
-  		<li>prevent duplicate entries USED SQL UNIQUE ON CONFLICT REPLACE</li>
-  		<li>display hourly rate or rate per min.</li>
-  		<li>enter hourly rate,store rate per min as sessionStorage.rate_per_min </li>
-  		<li>use rate_per_min to calculate subtotal for tasks</li>
-  		<li>display selected  "materials"</li>
-  			<ul>
-  				<li>add number needed and calculate subtotal cost</li>
-  			</ul>
-  		<li>display selected "tasks" </li>
-  			<ul>
-  				<li>number of repitions and calculate subtotal time</li>
-  			</ul>
-  		<li>need to insert estimate ID with each "forEstimate" item added.</li>
-     	<li>try store est id in local storage.</li>
-     		<ul>
-     			<li>localStorage.foo = "bar"</li>
-     			<li>sessionStorage.foo = "bar"</li>
-     		</ul>
-  	</ul>
+  	 
   </div>
 	</body>
 </html>

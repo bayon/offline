@@ -1,6 +1,6 @@
 <?php
 //constants:
-define('APP_NAME','QuickEst');
+define('APP_NAME','Rough-Est');
 
 define('ABR_MINUTE','&nbsp;min');
 ?>

@@ -4,6 +4,7 @@ include_once ('constants.php');
 <!DOCTYPE html>
 <html>
   <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script type='text/javascript' src='js/rwd.js'></script>
 		<link rel='stylesheet' type='text/css' href='css/style.css'>
@@ -16,7 +17,8 @@ include_once ('constants.php');
   	 
   	 
 		<h3>Materials</h3>
-  	 
+  	 		<div class='directions' style='font-size:11px;font-style:italic;'>A general list of materials.</div>
+
    
     <table border=1 class="estimatorTable">
     <form type="post" onsubmit="addMaterial(); return false;">

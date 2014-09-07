@@ -5,6 +5,7 @@ include_once ('constants.php');
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script type='text/javascript' src='js/rwd.js'></script>
 		<link rel='stylesheet' type='text/css' href='css/style.css'>
@@ -23,6 +24,8 @@ include_once ('constants.php');
 		<div class="content">
 
 			<h2>Estimate</h2>
+					<div class='directions' style='font-size:11px;font-style:italic;'>Add rate per hour,tasks, and materials.</div>
+
 			<div id='estimateControlHeader'>
 
 				<button id='newEstimateFormButton' onclick='openNewEstimateForm();' >
@@ -82,7 +85,9 @@ include_once ('constants.php');
 				<button id='finalize' style='margin-top:20px;font-weight:bold;'  >
 						finalize
 					</button>
-				
+				<button id='save' style='margin-top:20px;font-weight:bold;'  >
+						save
+					</button>
 
 				<div id='availableSelections' class='form_row'style='float:left; width:100%;'>
 					<h3> Available Tasks: </h3>
@@ -136,7 +141,7 @@ include_once ('constants.php');
 				sessionStorage.totalCost = totalTasksAndMaterials;
 
 				//var summaryDiv = document.getElementById('summaryDiv');
-				//summaryDiv.style.display="block";
+				//summaryDiv.style.display="block";  delete estimate REALLY
 				
 				
 				
@@ -159,6 +164,10 @@ include_once ('constants.php');
 				var summaryDiv = document.getElementById('summaryDiv');
 				summaryDiv.style.display="block";
 
+			});
+			
+			$("#save").click(function() {
+				
 			});
 
 		</script>
