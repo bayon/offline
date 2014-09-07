@@ -1,0 +1,28 @@
+Document was loaded from Application Cache with manifest http://localhost:8888/forteworks/offline/cache.appcache estimate.php:1
+Application Cache Checking event estimate.php:1
+Application Cache NoUpdate event estimate.php:1
+ready! estimate.php:119
+fn initEstimate estimate.js:113
+asfn open estimate.js:6
+asfn createEstimateTable estimate.js:13
+asfn getAllEstimateItems estimate.js:132
+asfn deleteEstimate estimate.js:64
+asfn EST deleteAllMaterialsForEstimate estimate.js:102
+asfn EST deleteAllTasksForEstimate estimate.js:88
+fn loadEstimateItems estimate.js:140
+asfn onEstimateDeleteSuccess  estimate.js:73
+fn initMaterialsForEstimateID materials.js:148
+fn getAllMaterialItemsForEstimateID materials.js:155
+fn initTasksForEstimateID tasks.js:141
+fn getAllTodoItemsForEstimateID tasks.js:148
+asfn getAllEstimateItems estimate.js:132
+fn loadEstimateItems estimate.js:140
+fn openNewEstimateForm estimate.js:243
+asfn deleteEstimate estimate.js:64
+asfn onEstimateDeleteSuccess  estimate.js:73
+fn initMaterialsForEstimateID materials.js:148
+fn getAllMaterialItemsForEstimateID materials.js:155
+fn initTasksForEstimateID tasks.js:141
+fn getAllTodoItemsForEstimateID tasks.js:148
+asfn getAllEstimateItems estimate.js:132
+fn loadEstimateItems 

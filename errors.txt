@@ -1,0 +1,5 @@
+on fresh start:
+There has been an error: could not prepare statement (1 no such table: todoForEstimate)
+
+clicking new estimate
+There has been an error: could not prepare statement (1 no such table: todoForEstimate)

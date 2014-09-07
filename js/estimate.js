@@ -2,13 +2,36 @@ var estimateNameSpace = {};
 estimateNameSpace.webdb = {};
 estimateNameSpace.webdb.db = null;
 
+
+function initEstimate() {
+	console.log('fn initEstimate');
+	estimateNameSpace.webdb.open();
+	estimateNameSpace.webdb.createEstimateTable();//creates a table then no navigation.
+	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);//querys estimates then navigates to loadEstimateItems()
+	
+	//estimateNameSpace.webdb.deleteEstimate(sessionStorage.est_id);
+	//estimateNameSpace.webdb.deleteAllMaterialsForEstimate(sessionStorage.est_id);
+	//estimateNameSpace.webdb.deleteAllTasksForEstimate(sessionStorage.est_id);
+	
+	//final calculations display
+	var totalCost = document.getElementById('totalCost');
+		if(sessionStorage.totalCost > 0){
+			totalCost.value=sessionStorage.totalCost;
+		}else{
+			totalCost.value=0;
+		}
+}
+
+
 estimateNameSpace.webdb.open = function() {
+	console.log('asfn open');
 	var dbSize = 5 * 1024 * 1024;
 	// 5MB
 	estimateNameSpace.webdb.db = openDatabase("Todo", "1.0", "Todo manager", dbSize);
 };
 
 estimateNameSpace.webdb.createEstimateTable = function() {
+	console.log('asfn createEstimateTable');
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("CREATE TABLE IF NOT EXISTS estimate(ID INTEGER PRIMARY KEY ASC, estimate TEXT  UNIQUE ON CONFLICT REPLACE,hrRate FLOAT,rate_per_minute FLOAT, added_on DATETIME)", []);
@@ -19,7 +42,7 @@ function deleteEstimate(){
 	estimateNameSpace.webdb.deleteEstimate(sessionStorage.est_id);
 }
 function addEstimate() {
-	console.log('fn addEstimate and delete previous estimate');
+	console.log('fn addEstimate');
 	// delete previous estimate
 	deleteEstimate();
 	var estimate = document.getElementById("estimate");
@@ -39,7 +62,7 @@ function addEstimate() {
 	sessionStorage.rate_per_min=0;
 }
 estimateNameSpace.webdb.addEstimate = function(estimateText,hrRate,rate_per_minute) {
-	console.log('fn addEstimate');
+	console.log('asfn addEstimate');
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		var addedOn = new Date();
@@ -48,28 +71,18 @@ estimateNameSpace.webdb.addEstimate = function(estimateText,hrRate,rate_per_minu
 };
 
 estimateNameSpace.webdb.onEstimateError = function(tx, e) {
+	console.log('asfn onEstimateError');
 	alert("There has been an error: " + e.message);
 };
 
 estimateNameSpace.webdb.onEstimateSuccess = function(tx, r) {
+	console.log('asfn onEstimateSuccess');
 	// re-render the data.
 	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);
 };
 
 estimateNameSpace.webdb.deleteEstimate = function(id) {
-	console.log('delete estimate REALLY');
-	//alert("ID:"+id);
-	
-	// TRY CALLING ORPHANS FROM HERE::::::::CLEARING ORPHANS IS NOT WORKING CORRECTLY    !!!!!!  ???????
-	//try moving these orphan functions to the estimate NAMESPACE
-	
-	//estimateNameSpace.webdb.deleteAllMaterialsForEstimate(sessionStorage.est_id);
-	//estimateNameSpace.webdb.deleteAllTasksForEstimate(sessionStorage.est_id);
-	//estimateNameSpace.webdb.deleteEstimate(sessionStorage.est_id);
-	//estimateNameSpace.webdb.deleteAllMaterialsForEstimate(sessionStorage.est_id);
-	//estimateNameSpace.webdb.deleteAllTasksForEstimate(sessionStorage.est_id);
-	
-	
+	console.log('asfn deleteEstimate');
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("DELETE FROM estimate WHERE ID = ?", [id], estimateNameSpace.webdb.onEstimateDeleteSuccess, estimateNameSpace.webdb.onEstimateError);
@@ -78,44 +91,22 @@ estimateNameSpace.webdb.deleteEstimate = function(id) {
 	
 };
 estimateNameSpace.webdb.onEstimateDeleteSuccess = function(tx, r) {
-	console.log('onEstimateDeleteSuccess ');
-	//   C L E A R   U I             --------------AFTER ESTIMATE DELETION
+	console.log('asfn onEstimateDeleteSuccess ');
+	//   C L E A R   U I      
 	var estimate_details = document.getElementById('estimate_details');
 	estimate_details.style.display = "none";
-	//FAIL var materialItemsForCurrentEstimate = document.getElementById("materialItemsForCurrentEstimate");
-	//materialItemsForCurrentEstimate.value="";
-	//materialItemsForCurrentEstimate
-	console.log('clear orphans ');
-	//alert('clear orphans ');
-	//
-	//
-	//
-	//alert("DO WE HAVE EST ID:"+ sessionStorage.est_id);
-	// CLEARING ORPHANS IS NOT WORKING CORRECTLY    !!!!!!  ???????
-	//materialNameSpace.webdb.deleteAllMaterialsForEstimate(sessionStorage.est_id);
-	//taskNameSpace.webdb.deleteAllTasksForEstimate(sessionStorage.est_id);
-	
-	//
-	//
-	//
-	
-	
-	
-	console.log('clear UI ');
 	sessionStorage.est_id = 0;
 	sessionStorage.rate_per_hour=0;
 	sessionStorage.rate_per_min = 0;
 	sessionStorage.estimate_name="";
 	initMaterialsForEstimateID();
 	initTasksForEstimateID();
-	//sessionStorage.est_id = 0; alert
-	// FAILED TO REMOVE ORPHANS HERE  re-render the data.
 	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);
 };
 
 //-------------------------
 estimateNameSpace.webdb.deleteAllTasksForEstimate = function(id) {
-	console.log("fn EST deleteAllTasksForEstimate");
+	console.log("asfn EST deleteAllTasksForEstimate");
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		//tx.executeSql("DELETE FROM todoForEstimate WHERE ID=?", [id], estimateNameSpace.webdb.onTaskDeleteSuccess, estimateNameSpace.webdb.onTaskError);
@@ -125,57 +116,23 @@ estimateNameSpace.webdb.deleteAllTasksForEstimate = function(id) {
 	});
 };
 estimateNameSpace.webdb.onTaskDeleteSuccess = function(tx, r) {
-	console.log("fn EST onTaskDeleteSuccess");
-	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
-	//startEstimation(sessionStorage.est_id); finalize
+	console.log("asfn EST onTaskDeleteSuccess");
 };
 
 estimateNameSpace.webdb.deleteAllMaterialsForEstimate = function(id) {
-	console.log("fn EST deleteAllMaterialsForEstimate");
-	//alert("meterial ID:"+id);
+	console.log("asfn EST deleteAllMaterialsForEstimate");
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("DELETE FROM materialForEstimates", [], estimateNameSpace.webdb.onMaterialDeleteSuccess, estimateNameSpace.webdb.onMaterialError);
 	});
 };
 estimateNameSpace.webdb.onMaterialDeleteSuccess = function(tx, r) {
-	console.log("fn EST onMaterialDeleteSuccess");
-	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
-	//startEstimation(sessionStorage.est_id);
+	console.log("asfn EST onMaterialDeleteSuccess");
 };
 //-----------------------
 
-
-
-
-
-
-
-
-
-
-function initEstimate() {
-	console.log(' initEstimate');
-	estimateNameSpace.webdb.open();
-	estimateNameSpace.webdb.createEstimateTable();//creates a table then no navigation.
-	estimateNameSpace.webdb.getAllEstimateItems(loadEstimateItems);//querys estimates then navigates to loadEstimateItems()
-	
-	estimateNameSpace.webdb.deleteEstimate(sessionStorage.est_id);
-	estimateNameSpace.webdb.deleteAllMaterialsForEstimate(sessionStorage.est_id);
-	estimateNameSpace.webdb.deleteAllTasksForEstimate(sessionStorage.est_id);
-	
-	//final calculations display
-	var totalCost = document.getElementById('totalCost');
-		if(sessionStorage.totalCost > 0){
-			totalCost.value=sessionStorage.totalCost;
-		}else{
-			totalCost.value=0;
-		}
-		
-
-}
-
 estimateNameSpace.webdb.getAllEstimateItems = function(renderFunc) {
+	console.log('asfn getAllEstimateItems');
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM estimate", [], renderFunc, estimateNameSpace.webdb.onEstimateError);
@@ -183,6 +140,8 @@ estimateNameSpace.webdb.getAllEstimateItems = function(renderFunc) {
 };
 
 function loadEstimateItems(tx, rs) {
+	console.log('fn loadEstimateItems');
+	var db = estimateNameSpace.webdb.db;
 	//loops through query results , builds ui in render function and returns ui html to main view.
 	var rowOutput = "<tr><th colspan=3>Estimate</th></tr>";
 	var estimateItems = document.getElementById("estimateItems");
@@ -195,13 +154,14 @@ function loadEstimateItems(tx, rs) {
 }
 
 function renderEstimate(row) {
+	console.log('fn renderEstimate');
 	return "<tr><td>" + row.estimate + "</td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.selectEstimate(" + row.ID + ");'>Details</a></td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.deleteEstimate(" + row.ID + ");'>Delete</a></td></tr>";
 }
 
 
 
 estimateNameSpace.webdb.selectEstimate = function(id) {
-	console.log('fn selectEstimate');
+	console.log('asfn selectEstimate');
 	//clear summary
 	var summaryView = document.getElementById('summaryDiv');
 	summaryView.style.display = "none";
@@ -233,7 +193,7 @@ estimateNameSpace.webdb.selectEstimate = function(id) {
 };
 
 estimateNameSpace.webdb.onEstimateSelectSuccess = function(tx, r) {
-
+console.log('asfn onEstimateSelectSuccess');
 	var rowOutput = "";
 	var estimateItems = document.getElementById("selectedEstimateItem");
 	for (var i = 0; i < r.rows.length; i++) {
@@ -243,6 +203,7 @@ estimateNameSpace.webdb.onEstimateSelectSuccess = function(tx, r) {
 };
 
 function renderSelectedEstimate(row) {
+	console.log('fn renderSelectedEstimate');
 	sessionStorage.est_id=row.ID;
 	sessionStorage.estimate_name=row.estimate;
 	sessionStorage.rate_per_hour=row.hrRate;
@@ -253,7 +214,7 @@ function renderSelectedEstimate(row) {
 }
 
 function startEstimation(id) {
-	 
+	 console.log('fn startEstimation');
 	// SET CURRENT ESTIMATE ID
 	sessionStorage.est_id = id;
 	taskNameSpace.webdb.open();
@@ -271,6 +232,7 @@ function startEstimation(id) {
 	
 }
 function refreshEstimation(id){
+	 console.log('fn refreshEstimation');
 	//INIT ALL AVAILABLE TASKS AND MATERIALS
 	initTasksForEstimates();
 	initMaterialsForEstimates();
@@ -281,6 +243,7 @@ function refreshEstimation(id){
 }
 
 function openNewEstimateForm(){
+	 console.log('fn openNewEstimateForm');
 		var newEstimateForm = document.getElementById('newEstimateForm');
 		newEstimateForm.style.display="block";
 		
