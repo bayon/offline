@@ -65,6 +65,9 @@ estimateNameSpace.webdb.deleteEstimate = function(id) {
 	
 	//estimateNameSpace.webdb.deleteAllMaterialsForEstimate(sessionStorage.est_id);
 	//estimateNameSpace.webdb.deleteAllTasksForEstimate(sessionStorage.est_id);
+	//estimateNameSpace.webdb.deleteEstimate(sessionStorage.est_id);
+	//estimateNameSpace.webdb.deleteAllMaterialsForEstimate(sessionStorage.est_id);
+	//estimateNameSpace.webdb.deleteAllTasksForEstimate(sessionStorage.est_id);
 	
 	
 	var db = estimateNameSpace.webdb.db;
