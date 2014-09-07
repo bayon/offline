@@ -5,4 +5,4 @@
 	<a href="estimate.php" >estimate</a>
 	<a href="reference.php" >reference</a>
 </div>
-<h2><?=APP_NAME; ?></h2>
+<h1 style='margin-left:30px;'><?=APP_NAME; ?></h1>

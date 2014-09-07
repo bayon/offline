@@ -6,10 +6,8 @@ include_once ('constants.php');
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<script type='text/javascript' src='js/rwd.js'></script>
-
+		<script type='text/javascript' src='js/rwd.js'></script>
 		<link rel='stylesheet' type='text/css' href='css/style.css'>
-		
 		<script type='text/javascript' src='m/EstimateModel.js'></script>
 		<script type='text/javascript' src='m/TaskModel.js'></script>
 		<script type='text/javascript' src='m/MaterialModel.js'></script>
@@ -24,7 +22,7 @@ include_once ('constants.php');
  ?>
 		<div class="content">
 
-			<h3>Estimate</h3>
+			<h2>Estimate</h2>
 			<div id='estimateControlHeader'>
 
 				<button id='newEstimateFormButton' onclick='openNewEstimateForm();' >
@@ -32,9 +30,7 @@ include_once ('constants.php');
 				</button>
 				<!-- NEW ESTIMATE FORM -->
 				<div id='newEstimateForm' style='display:none;'>
-					<p>
-						delete old estimate: only one at a time.
-					</p>
+					
 					<table border=1 class="estimatorTable">
 						<form type="post" onsubmit="addEstimate(); return false;">
 							<tr>
@@ -67,8 +63,8 @@ include_once ('constants.php');
 						<td id='estimateName' style='font-weight:bold;background-color:lightblue;'></td>
 						<td>tasks:</td><td id='taskCost' style='font-weight:bold;'></td>
 						<td>materials:</td><td id='materialCost' style='font-weight:bold;'></td>
-						<td>hours:</td><td id='est_time' style='font-weight:bold;'></td>
-						<td>total $:</td><td id='totalCost' style='font-weight:bold;color:green;'></td>
+						<td>time:</td><td id='est_time' style='font-weight:bold;'></td>
+						<td>total:</td><td id='totalCost' style='font-weight:bold;color:green;'></td>
 					</tr>
 				</table>
 			</div>
@@ -77,25 +73,27 @@ include_once ('constants.php');
 
 				<table id="selectedEstimateItem" width=100%;></table>
 
-				<form id="myFormId" action="#">
-					<input type='hidden'  name='hidden_name' />
-					<div  class='form_row'  style='float:left; width:100%;'>
+				 
 
 						<table id="todoItemsForCurrentEstimate" border=1 class="estimatorTable"></table>
 
 						<table id="materialItemsForCurrentEstimate"  border=1 class="estimatorTable"></table>
-					</div>
-					<button id='finalize' style='margin-top:20px;font-weight:bold;'  >
+					
+				<button id='finalize' style='margin-top:20px;font-weight:bold;'  >
 						finalize
 					</button>
-				</form>
-				<div id="results"></div>
+				
 
 				<div id='availableSelections' class='form_row'style='float:left; width:100%;'>
 					<h3> Available Tasks: </h3>
-					<table id="todoItemsForEstimates" border=1 class="estimatorTable"></table>
+					<div class="scrollingContainer">
+						<table id="todoItemsForEstimates" border=1 class="estimatorTable"></table>
+					</div>
+					
 					<h3> Available Materials: </h3>
+					<div class="scrollingContainer">
 					<table id="materialItemsForEstimates" border=1 class="estimatorTable"></table>
+					</div>
 				</div>
 
 			</div>
@@ -110,16 +108,8 @@ include_once ('constants.php');
 				console.log("ready!");
 				//alert('jq and js'); start
 
-				//populate the SUMMARY  with values clear orphans
-				$("#estimateName").text(sessionStorage.estimate_name);
-				$("#taskCost").text(sessionStorage.totalTask);
-				$("#materialCost").text(sessionStorage.totalMaterial);
-
-				var est_hours = Math.round((sessionStorage.totalMinutes / 60) * 100) / 100;
-				//alert(est_hours);
-				$("#est_time").text(est_hours);
-				$("#totalCost").text(sessionStorage.totalCost);
-
+				var summaryDiv = document.getElementById('summaryDiv');
+				summaryDiv.style.display="none";
 			});
 
 			$("#finalize").click(function() {
@@ -147,6 +137,27 @@ include_once ('constants.php');
 
 				//var summaryDiv = document.getElementById('summaryDiv');
 				//summaryDiv.style.display="block";
+				
+				
+				
+				//update summary values
+				//populate the SUMMARY  with values clear orphans
+				$("#estimateName").text(sessionStorage.estimate_name);
+				
+				var cleanTaskTotal = Math.round(sessionStorage.totalTask * 100)/100;
+				$("#taskCost").text("$"+cleanTaskTotal);
+				
+				var cleanMaterialTotal = Math.round(sessionStorage.totalMaterial * 100)/100;
+				$("#materialCost").text("$"+cleanMaterialTotal);
+
+				var est_hours = Math.round((sessionStorage.totalMinutes / 60) * 100) / 100;
+				//alert(est_hours);
+				$("#est_time").text(est_hours+"hrs");
+				var cleanCostTotal = Math.round(sessionStorage.totalCost * 100)/100;
+				$("#totalCost").text("$"+cleanCostTotal);
+
+				var summaryDiv = document.getElementById('summaryDiv');
+				summaryDiv.style.display="block";
 
 			});
 

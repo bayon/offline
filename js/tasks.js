@@ -148,6 +148,7 @@ taskNameSpace.webdb.getAllTodoItemsForEstimateID = function(renderFunc) {
 	console.log("fn getAllTodoItemsForEstimateID");
 	var db = taskNameSpace.webdb.db;
 	var est_id = sessionStorage.est_id;
+	//could I update Summary HERE?
 	 
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM todoForEstimate WHERE est_id = "+est_id+"", [], renderFunc, taskNameSpace.webdb.onTaskError);
