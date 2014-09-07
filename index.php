@@ -1,21 +1,15 @@
-<?php include_once('constants.php'); ?>
-<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN' 'http://www.w3.org/TR/html4/strict.dtd'>
-<html manifest='cache.appcache'>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
-		<link rel='stylesheet' type='text/css' href='css/style.css'>
-	</head>
+<?php
+		include_once ('head.php');
+ ?>
 	<body >
-		<?php include_once('navigation.php'); ?>
+		<?php
+		include_once ('navigation.php');
+ ?>
 		<div class="content">
 		<h3>A quick estimate calculator for people who do things with stuff.</h3>
 		
 	<p> How it works.</p>
      <ul>
-     	
-     	
      	<li>Make a general list of tasks and how long they take in minutes.</li>
      	<li>Make a list of materials and how much they cost each.</li>
      	<li>Enter your hourly rate.</li>
@@ -30,10 +24,7 @@
      			<li>The total cost.</li>
      		</ul>
      	<li>And...it works even if you don't have an internet connection!</li>
-     	
-  		
-  	</ul>
-  	 
+  	</ul> 
   </div>
 	</body>
 </html>
