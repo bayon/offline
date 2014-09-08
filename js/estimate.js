@@ -39,6 +39,8 @@ estimateNameSpace.webdb.deleteEstimate = function(id) {
 };
 function deleteEstimate(){
 	console.log('fn deleteEstimate');
+	estimateNameSpace.webdb.deleteAllTasksForEstimate(sessionStorage.est_id);
+	estimateNameSpace.webdb.deleteAllMaterialsForEstimate(sessionStorage.est_id);
 	estimateNameSpace.webdb.deleteEstimate(sessionStorage.est_id);
 }
 
@@ -149,7 +151,7 @@ function loadEstimateItems(tx, rs) {
 
 function renderEstimate(row) {
 	console.log('fn renderEstimate');
-	return "<tr><td>" + row.estimate + "</td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.selectEstimate(" + row.ID + ");'>Details</a></td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.deleteEstimate(" + row.ID + ");'>Delete</a></td></tr>";
+	return "<tr><td>" + row.estimate + "</td><td style='width:15%;'><a href='javascript:void(0);'  onclick='estimateNameSpace.webdb.selectEstimate(" + row.ID + ");'>Details</a></td><td style='width:15%;'><a href='javascript:void(0);'  style='color:red;' onclick='estimateNameSpace.webdb.deleteEstimate(" + row.ID + ");'>X</a></td></tr>";
 }
 
 estimateNameSpace.webdb.selectEstimate = function(id) {

@@ -29,6 +29,6 @@
 	</body>
 </html>
 <!-- 
-	search:
+	search: lightblue #333
 	
 	-->​

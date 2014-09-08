@@ -55,7 +55,7 @@ function loadMaterialItems(tx, rs) {
 }
 
 function renderMaterial(row) {
-	return "<tr><td>" + row.material + "</td><td>$&nbsp;" + row.cost + " </td><td><a href='javascript:void(0);'  onclick='materialNameSpace.webdb.deleteMaterial(" + row.ID + ");'>Delete</a></td></tr>";
+	return "<tr><td>" + row.material + "</td><td>$&nbsp;" + row.cost + " </td><td><a href='javascript:void(0);' style='color:red;'  onclick='materialNameSpace.webdb.deleteMaterial(" + row.ID + ");'>X</a></td></tr>";
 }
 
 function initMaterials() {

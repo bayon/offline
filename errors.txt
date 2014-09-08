@@ -1,4 +1,0 @@
-on fresh start:
-
-clicking new estimate
-There has been an error: could not prepare statement (1 no such table: todoForEstimate)

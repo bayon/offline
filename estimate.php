@@ -12,7 +12,7 @@ include_once ('head.php');
 			Add rate per hour,tasks, and materials.
 		</div>
 
-		<div id='estimateControlHeader'>
+		<div id='estimateControlHeader' style='margin-top:20px;'>
 
 			<button id='newEstimateFormButton' onclick='openNewEstimateForm();' >
 				new estimate
@@ -48,12 +48,12 @@ include_once ('head.php');
 		<div id='summaryDiv' >
 			<h3>Summary:</h3>
 			<table class='summaryTable' border=1 width=100%>
+				<tr> <td id='estimateName' class='task_summary_detail_head' colspan='8'></td></tr>
 				<tr>
-					<td id='estimateName' style='font-weight:bold;background-color:lightblue;'></td>
-					<td>tasks:</td><td id='taskCost' style='font-weight:bold;'></td>
-					<td>materials:</td><td id='materialCost' style='font-weight:bold;'></td>
-					<td>time:</td><td id='est_time' style='font-weight:bold;'></td>
-					<td>total:</td><td id='totalCost' style='font-weight:bold;color:green;'></td>
+					<td  class='task_summary_detail_key'>tasks:</td><td id='taskCost' class='task_summary_detail_value'></td>
+					<td  class='task_summary_detail_key'>materials:</td><td id='materialCost' class='task_summary_detail_value'></td>
+					<td  class='task_summary_detail_key'>time:</td><td id='est_time' class='task_summary_detail_value'></td>
+					<td  class='task_summary_detail_key'>total:</td><td id='totalCost' style='font-weight:bold;color:green;'></td>
 				</tr>
 			</table>
 		</div>

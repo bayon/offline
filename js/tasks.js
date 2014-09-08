@@ -55,7 +55,7 @@ function loadTaskItems(tx, rs) {
 }
 
 function renderTask(row) {
-	return "<tr> <td>" + row.task + "</td><td>" + row.minutes + " </td><td><a href='javascript:void(0);'  onclick='taskNameSpace.webdb.deleteTask(" + row.ID + ");'>Delete</a></td></tr>";
+	return "<tr> <td>" + row.task + "</td><td>" + row.minutes + " </td><td><a href='javascript:void(0);' style='color:red;'  onclick='taskNameSpace.webdb.deleteTask(" + row.ID + ");'>X</a></td></tr>";
 }
 
 function initTasks() {
