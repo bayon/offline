@@ -72,7 +72,6 @@ function addTodo() {
 	todo.value = "";
 	minutes.value = "";
 }
-
 ////////////////
 function initTasksForEstimates() {
 	taskNameSpace.webdb.open();
@@ -93,15 +92,12 @@ function loadTodoItemsForEstimates(tx, rs) {
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderTodoForEstimates(rs.rows.item(i));
 	}
-
 	todoItems.innerHTML = rowOutput;
 }
 
 function renderTodoForEstimates(row) {
 	console.log("fn renderTodoForEstimates");
-
 	return "<tr><td>" + row.todo + "</td><td>" + row.minutes + "&nbsp;min </td><td><a href='javascript:void(0);'  onclick='taskNameSpace.webdb.selectTodo(" + row.ID + ");'>Select</a></td></tr>";
-
 }
 
 taskNameSpace.webdb.selectTodo = function(id) {
@@ -110,7 +106,6 @@ taskNameSpace.webdb.selectTodo = function(id) {
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM todo WHERE ID=?", [id], taskNameSpace.webdb.onTaskSelectSuccess, taskNameSpace.webdb.onTaskError);
 	});
-
 };
 
 taskNameSpace.webdb.createTaskTableForEstimates = function() {
@@ -128,28 +123,18 @@ taskNameSpace.webdb.onTaskSelectSuccess = function(tx, rs) {
 	db.transaction(function(tx) {
 		tx.executeSql("INSERT INTO todoForEstimate(ID, est_id, todo , minutes , repititions, added_on ) VALUES (NULL,'" + est_id + "','" + task.todo + "','" + task.minutes + "', 1, '" + task.added_on + "');", [], taskNameSpace.webdb.onTaskInsertSuccess, taskNameSpace.webdb.onTaskError );
 	});
-	//refresh
-	
-	//startEstimation(sessionStorage.est_id);
 };
-
 ////////////////////////////////
-
 ///-------------------------------------------
- 
 function initTasksForEstimateID() {
 	console.log("fn initTasksForEstimateID");
 	taskNameSpace.webdb.open();
-	
 	taskNameSpace.webdb.getAllTodoItemsForEstimateID(loadTodoItemsForEstimateID);//getAllTodoItemsForEstimateID(loadTodoItemsForEstimateID)
-
 }
 taskNameSpace.webdb.getAllTodoItemsForEstimateID = function(renderFunc) {
 	console.log("fn getAllTodoItemsForEstimateID");
 	var db = taskNameSpace.webdb.db;
-	var est_id = sessionStorage.est_id;
-	//could I update Summary HERE?
-	 
+	var est_id = sessionStorage.est_id;	 
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM todoForEstimate WHERE est_id = "+est_id+"", [], renderFunc, taskNameSpace.webdb.onTaskError);
 	});
@@ -161,7 +146,6 @@ taskNameSpace.webdb.getAllTodoItemsForEstimateID = function(renderFunc) {
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderTodoForCurrentEstimate(rs.rows.item(i));
 	}
-
 	todoItems.innerHTML = rowOutput;
 }
 
@@ -206,11 +190,9 @@ taskNameSpace.webdb.deleteAllTasksForEstimate = function(id) {
 };
 taskNameSpace.webdb.onTaskDeleteSuccess = function(tx, r) {
 	console.log("fn onTaskDeleteSuccess");
-	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
 	startEstimation(sessionStorage.est_id);
 };
 taskNameSpace.webdb.onTaskInsertSuccess = function(tx, r) {
-	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
 	console.log("fn onTaskInsertSuccess");
 	startEstimation(sessionStorage.est_id);
 };

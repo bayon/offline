@@ -29,7 +29,6 @@ materialNameSpace.webdb.onMaterialsError = function(tx, e) {
 };
 
 materialNameSpace.webdb.onMaterialsSuccess = function(tx, r) {
-	
 	materialNameSpace.webdb.getAllMaterialItems(loadMaterialItems);
 };
 
@@ -52,7 +51,6 @@ function loadMaterialItems(tx, rs) {
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderMaterial(rs.rows.item(i));
 	}
-
 	materialItems.innerHTML = rowOutput;
 }
 
@@ -73,18 +71,12 @@ function addMaterial() {
 	material.value = "";
 	material_cost.value = "";
 }
-
-//[[[[[[[[[[[[[[[[[[[[DUPLICATE CHECK]]]]]]]]]]]]]]]]]]]]
- // use SQL to prevent duplicates: CREATE TABLE a (i INT, j INT, UNIQUE(i, j) ON CONFLICT REPLACE);
-//[[[[[[[[[[[[[[[[[[[[[[DUPLICATE CHECK END]]]]]]]]]]]]]]]]]]]]]]
-
 ////////////////GENERAL
 function initMaterialsForEstimates() {
 	console.log('fn initMaterialsForEstimates');
 	materialNameSpace.webdb.open();
 	materialNameSpace.webdb.createMaterialTableForEstimates();
 	materialNameSpace.webdb.getAllMaterialItemsForEstimates(loadMaterialItemsForEstimates);
-	
 }
 materialNameSpace.webdb.getAllMaterialItemsForEstimates = function(renderFunc) {
 	console.log('fn getAllMaterialItemsForEstimates');
@@ -100,9 +92,7 @@ function loadMaterialItemsForEstimates(tx, rs) {
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderMaterialForEstimates(rs.rows.item(i));
 	}
-
 	materialItems.innerHTML = rowOutput;
-	
 }
 function renderMaterialForEstimates(row) {
 	console.log('fn renderMaterialForEstimates');
@@ -114,7 +104,6 @@ materialNameSpace.webdb.selectMaterial = function(id) {
 	db.transaction(function(tx) {
 		tx.executeSql("SELECT * FROM material WHERE ID=?", [id], materialNameSpace.webdb.onMaterialSelectSuccess, materialNameSpace.webdb.onMaterialError);
 	});
-	
 };
 
 materialNameSpace.webdb.createMaterialTableForEstimates = function() {
@@ -122,9 +111,6 @@ materialNameSpace.webdb.createMaterialTableForEstimates = function() {
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("CREATE TABLE IF NOT EXISTS materialForEstimates(ID INTEGER PRIMARY KEY ASC, est_id INTEGER, material TEXT  UNIQUE ON CONFLICT REPLACE, cost INTEGER, numberOf INTEGER, added_on DATETIME )", []);
-	//FAIL: FOREIGN KEY (sketchID) REFERENCES Sketch (sketchId)
-
-	
 	});
 };
 materialNameSpace.webdb.onMaterialSelectSuccess = function(tx, rs) {
@@ -141,15 +127,11 @@ materialNameSpace.webdb.onMaterialSelectSuccess = function(tx, rs) {
 };
 
 ////////////////////////////////
-
 ///-------------------------------------------CURRENT
- 
 function initMaterialsForEstimateID() {
 	console.log("fn initMaterialsForEstimateID");
 	materialNameSpace.webdb.open();
-	
 	materialNameSpace.webdb.getAllMaterialItemsForEstimateID(loadMaterialItemsForEstimateID);//getAllMaterialItemsForEstimateID(loadMaterialItemsForEstimateID)
-
 }
 materialNameSpace.webdb.getAllMaterialItemsForEstimateID = function(renderFunc) {
 	console.log("fn getAllMaterialItemsForEstimateID");
@@ -167,17 +149,9 @@ materialNameSpace.webdb.getAllMaterialItemsForEstimateID = function(renderFunc) 
 	for (var i = 0; i < rs.rows.length; i++) {
 		rowOutput += renderMaterialForCurrentEstimate(rs.rows.item(i));
 	}
-
 	materialItems.innerHTML = rowOutput;
 }
-/*
-function renderMaterialForCurrentEstimate(row) {
-	console.log("fn renderMaterialForCurrentEstimate");
 
-	return "<li>" + row.material + ":" + row.cost + " [<a href='javascript:void(0);'  onclick='materialNameSpace.webdb.selectMaterial(" + row.ID + ");'>Select</a>]</li>";
-
-}
-*/
 ///------------------------------------------- 
 /////>>>>>>>>>>>>>>>>>>
 function renderMaterialForCurrentEstimate(row) {
@@ -208,10 +182,9 @@ materialNameSpace.webdb.changeNumberOfSuccess = function(tx, r) {
 	console.log("fn changeNumberOfSuccess");
 	materialNameSpace.webdb.getAllMaterialItemsForEstimateID(loadMaterialItemsForEstimateID);
 };
-////////  WARNING : NO tx PARAM !!!!!
+
 materialNameSpace.webdb.deleteAllMaterialsForEstimate = function(id) {
 	console.log("fn deleteAllMaterialsForEstimate");
-	//alert("material ID:"+id);
 	var db = materialNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		tx.executeSql("DELETE FROM materialForEstimates WHERE est_id=?", [id], materialNameSpace.webdb.onMaterialDeleteSuccess, materialNameSpace.webdb.onMaterialError);
@@ -219,11 +192,9 @@ materialNameSpace.webdb.deleteAllMaterialsForEstimate = function(id) {
 };
 materialNameSpace.webdb.onMaterialDeleteSuccess = function(tx, r) {
 	console.log("fn onMaterialDeleteSuccess");
-	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
 	startEstimation(sessionStorage.est_id);
 };
 materialNameSpace.webdb.onMaterialInsertSuccess = function(tx, r) {
-	//taskNameSpace.webdb.getAllTodoItems(loadTodoItems);
 	console.log("fn onMaterialInsertSuccess");
 	startEstimation(sessionStorage.est_id);
 };
