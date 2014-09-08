@@ -9,10 +9,10 @@
 			A general list of tasks.
 		</div>
 		<table border=1 class="estimatorTable">
-			<form type="post" onsubmit="addTodo(); return false;">
+			<form type="post" onsubmit="addTask(); return false;">
 				<tr>
 					<td>task</td><td>
-					<input type="text" id="todo" name="todo"    />
+					<input type="text" id="task" name="task"    />
 					</td>
 				</tr>
 				<tr>
@@ -27,7 +27,7 @@
 				</tr>
 			</form>
 		</table>
-		<table id="todoItems" border=1 class="estimatorTable"></table>
+		<table id="taskItems" border=1 class="estimatorTable"></table>
 
 	</div>
 </body>

@@ -6,7 +6,7 @@ estimateNameSpace.webdb.open = function() {
 	console.log('asfn open');
 	var dbSize = 5 * 1024 * 1024;
 	// 5MB
-	estimateNameSpace.webdb.db = openDatabase("Todo", "1.0", "Todo manager", dbSize);
+	estimateNameSpace.webdb.db = openDatabase("Task", "1.0", "Task manager", dbSize);
 };
 
 function initEstimate() {
@@ -108,7 +108,7 @@ estimateNameSpace.webdb.deleteAllTasksForEstimate = function(id) {
 	var db = estimateNameSpace.webdb.db;
 	db.transaction(function(tx) {
 		//delete ALL 
-			tx.executeSql("DELETE FROM todoForEstimate", [], estimateNameSpace.webdb.onTaskDeleteSuccess, estimateNameSpace.webdb.onTaskError);
+			tx.executeSql("DELETE FROM taskForEstimate", [], estimateNameSpace.webdb.onTaskDeleteSuccess, estimateNameSpace.webdb.onTaskError);
 	});
 };
 estimateNameSpace.webdb.onTaskDeleteSuccess = function(tx, r) {

@@ -62,7 +62,7 @@ include_once ('head.php');
 
 			<table id="selectedEstimateItem" width=100%;></table>
 
-			<table id="todoItemsForCurrentEstimate" border=1 class="estimatorTable"></table>
+			<table id="taskItemsForCurrentEstimate" border=1 class="estimatorTable"></table>
 
 			<table id="materialItemsForCurrentEstimate"  border=1 class="estimatorTable"></table>
 
@@ -76,7 +76,7 @@ include_once ('head.php');
 			<div id='availableSelections' class='form_row'style='float:left; width:100%;'>
 				<h3> Available Tasks: </h3>
 				<div class="scrollingContainer">
-					<table id="todoItemsForEstimates" border=1 class="estimatorTable"></table>
+					<table id="taskItemsForEstimates" border=1 class="estimatorTable"></table>
 				</div>
 
 				<h3> Available Materials: </h3>

@@ -28,4 +28,7 @@
   </div>
 	</body>
 </html>
-<!-- new Material  prevent duplicates with SQL sqlite: UNIQUE ON CONFLICT REPLACE   remove -->​
+<!-- 
+	search:
+	
+	-->​

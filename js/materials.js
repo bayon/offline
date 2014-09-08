@@ -5,7 +5,7 @@ materialNameSpace.webdb.db = null;
 materialNameSpace.webdb.open = function() {
 	var dbSize = 5 * 1024 * 1024;
 	// 5MB
-	materialNameSpace.webdb.db = openDatabase("Todo", "1.0", "Todo manager", dbSize);
+	materialNameSpace.webdb.db = openDatabase("Task", "1.0", "Task manager", dbSize);
 };
 
 materialNameSpace.webdb.createMaterialsTable = function() {

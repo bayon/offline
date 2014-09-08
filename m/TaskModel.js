@@ -1,18 +1,18 @@
-function Task(id, todo,minutes,added_on) {
+function Task(id, task,minutes,added_on) {
 	this.id = id;
-	this.todo = todo;
+	this.task = task;
 	this.minutes = minutes;
 	this.added_on = added_on;
 	 
 }
 
 Task.prototype.id = '';
-Task.prototype.todo = '';
+Task.prototype.task = '';
 Task.prototype.minutes = '';
 Task.prototype.added_on = '';
 
 Task.prototype.reveal = function() {
-	alert(this.id + " | todo:" + this.todo+ " | minutes:" + this.minutes+ " | added_on:" + this.added_on);
+	alert(this.id + " | task:" + this.task+ " | minutes:" + this.minutes+ " | added_on:" + this.added_on);
 };
  
  
